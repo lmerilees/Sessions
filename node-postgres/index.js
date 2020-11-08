@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3001
 
-const sessions_model = require('./sessions_ model')
+const sessions_model = require('./sessions_model')
 
 app.use(express.json())
 
@@ -14,18 +14,20 @@ app.use(function (req, res, next) {
   });
   
 app.get('/', (req, res) => {
-    sessions_model.getMerchants()
+    sessions_model.getUsers()
     .then(response => {
         res.status(200).send(response);
     })
     .catch(error => {
+        console.log(error);
         res.status(500).send(error);
     })
 })
 
   app.post('/users', (req, res) => {
-    merchant_model.createUser(req.body)
+    sessions_model.createUser(req.body)
     .then(response => {
+      console.log(response);
       res.status(200).send(response);
     })
     .catch(error => {
