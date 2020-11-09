@@ -9,12 +9,15 @@ const pool = new Pool({
   insecureAuth: true,
 });
 
-const getUsers= () => {
+
+const getUsers = (body) => {
     return new Promise(function(resolve, reject) {
-      pool.query('SELECT * FROM users', (error, results) => {
+      const { user_id, user_password } = body
+      pool.query('SELECT * FROM users WHERE user_name = $1 AND password = $2', [user_id, user_password], (error, results) => {
         if (error) {
           reject(error)
         }
+        //console.log(results.rows.length)
         resolve(results);
       })
     }) 

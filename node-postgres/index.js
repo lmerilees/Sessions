@@ -13,13 +13,14 @@ app.use(function (req, res, next) {
     next();
   });
   
-app.get('/', (req, res) => {
-    sessions_model.getUsers()
+app.post('/getUsers', (req, res) => {
+    console.log(req.body)
+    sessions_model.getUsers(req.body)
     .then(response => {
         res.status(200).send(response);
+
     })
     .catch(error => {
-        console.log(error);
         res.status(500).send(error);
     })
 })

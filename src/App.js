@@ -1,19 +1,52 @@
-import logo from './logo.svg';
 import './App.css';
-import React from 'react';
-import Layout from './components/Layout/Layout';
-import Home from './Home';
-import Login from './components/Login/Login';
+//import React from 'react';
+//import Layout from './components/Layout/Layout';
+//import Home from './Home';
+//import Login from './components/Login/Login';
 import Splash from './components/Splash/Splash';
+import Login from "./Login";
+import Signup from "./Signup";
+import React, { Component } from "react";
+//import { Redirect, Switch, Route, Link } from "react-router-dom";
+import { withRouter } from "react-router";
+import "./Dashboard.css";
+import Dashboard from "./Dashboard";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
 
-import {BrowserRouter, NavLink, Redirect, Route, Switch} from 'react-router-dom';
-import { Nav, Navbar } from 'react-bootstrap';
+//import {BrowserRouter, browserHistory, NavLink, Redirect, Route, Switch} from 'react-router-dom';
+import {Container, Button, Row, Col, Nav, Navbar } from 'react-bootstrap';
+
+const styleHeader = {
+  color: 'white',
+  fontSize: '50px',
+  padding: '10px',
+  fontFamily: 'consolas',
+}
 
 function App() {
   return (
-    <Layout>
-      <Splash/>
-    </Layout>
+    <Router>
+      <Switch>
+        <Route path='/login'>
+          <Login/>
+        </Route>
+        <ProtectedRoute path="/dashboard">
+          <Dashboard/>
+        </ProtectedRoute>
+        <Route exact path='/'>
+          <Redirect exact from="/" to="dashboard"/>
+        </Route>
+        <Route path="*">
+          <Redirect from="/" to="dashboard" />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

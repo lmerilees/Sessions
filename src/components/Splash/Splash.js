@@ -18,20 +18,6 @@ const styleMain = {
 
 const Splash = (props) => (
     <Container fluid>
-        <div style={styleHeader}>
-            <Row>
-                <Col>
-                    Sessions                                               
-                    
-                </Col>
-                <Col>
-                    
-                </Col>
-                <Col>
-                    
-                </Col>
-            </Row>
-        </div>
         <Row>
             <br></br>
             <br></br>
