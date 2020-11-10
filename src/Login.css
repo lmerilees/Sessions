@@ -10,22 +10,30 @@ body {
   .container {
     position: relative;
     border-radius: 5px;
-    padding: 20px 20px 30px 20px;
+    padding: 20px 0px 30px 20px;
+    justify-self: center;
+    justify-content: center;
+    align-content: center;
   }
 
   .styleHeader {
     color: white;
     font-size: 50px;
+    padding: 10px 0px 0px 20px;
   }
 
   .styleMain {
-    padding: 10px 10px 0px 10px;
+    padding: 10px 0px 20px 10px;
     color: white;
     font-size: 40px;
+    float: center;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
   }
 
   .styleBody {
-    padding: 100px 10px 0px 10px;
+    padding: 100px 0px 0px 10px;
     color: white;
     font-size: 40px;
     align-items: center;
@@ -86,10 +94,10 @@ body {
   }
   /* Two-column layout */
   .col {
-    float: left;
-    width: 50%;
+    float: center;
+    width: 25%;
     margin: auto;
-    padding: 0 50px;
+    padding: 0 0px;
     margin-top: 6px;
   }
    
@@ -134,7 +142,7 @@ body {
   /* Responsive layout - when the screen is less than 650px wide, make the two columns stack on top of each other instead of next to each other */
   @media screen and (max-width: 650px) {
     .col {
-      width: 100%;
+      width: 50%;
       margin-top: 0;
     }
     /* hide the vertical line */

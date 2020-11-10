@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./Login.css";
 import { Redirect } from "react-router-dom";
-import {Row, Col, Container} from 'react-bootstrap';
+import {Row, Col, Container, Button} from 'react-bootstrap';
 
 class Login extends Component {
   constructor(props) {
@@ -15,6 +15,13 @@ class Login extends Component {
     };
   }
   
+  signUp = () => {
+     localStorage.removeItem("token");
+     this.setState({
+       islogout: true
+     });
+    console.log("signup");
+  };
 
   handleFormChange = event => {
     let loginParamsNew = { ...this.state.loginParams };
@@ -44,6 +51,7 @@ class Login extends Component {
     }
     if(data.rowCount != 0){
           localStorage.setItem("token", "T");
+          localStorage.setItem("user", user_id)
             this.setState({
               islogged: true
             });
@@ -63,17 +71,17 @@ class Login extends Component {
       return <Redirect to="/" />;
     }
     return (
-      <div className="container">
-        <Row>
-          <div class="styleHeader">
-            Sessions
+      <div>
+        <div className="styleHeader">
+          Sessions
+          <div className="push-right">
+          <Button variant="light" onClick={this.signUp}>Sign Up</Button>
           </div>
-        </Row>
-        <Row>
-          <Col>
-            <div class="styleBody">
+        </div>
+        <div className="container">
+            <div className="styleBody">
+            <div className="styleMain">Find your perfect skate session.</div>
               <form onSubmit={this.login} className="form-signin">
-                <div class="styleMain">Find your perfect skate session.</div>
                 <div className="row">
                   <div className="col">
                     <input
@@ -93,8 +101,8 @@ class Login extends Component {
                 </div>
               </form>
             </div>
-          </Col>
-        </Row>
+        
+      </div>
       </div>
     );
   }

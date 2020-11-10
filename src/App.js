@@ -3,7 +3,7 @@ import './App.css';
 //import Layout from './components/Layout/Layout';
 //import Home from './Home';
 //import Login from './components/Login/Login';
-import Splash from './components/Splash/Splash';
+//import Splash from './components/Splash/Splash';
 import Login from "./Login";
 import Signup from "./Signup";
 import React, { Component } from "react";
@@ -22,12 +22,7 @@ import ProtectedRoute from "./ProtectedRoute";
 //import {BrowserRouter, browserHistory, NavLink, Redirect, Route, Switch} from 'react-router-dom';
 import {Container, Button, Row, Col, Nav, Navbar } from 'react-bootstrap';
 
-const styleHeader = {
-  color: 'white',
-  fontSize: '50px',
-  padding: '10px',
-  fontFamily: 'consolas',
-}
+
 
 function App() {
   return (
@@ -35,6 +30,9 @@ function App() {
       <Switch>
         <Route path='/login'>
           <Login/>
+        </Route>
+        <Route path='/signup'>
+          <Signup/>
         </Route>
         <ProtectedRoute path="/dashboard">
           <Dashboard/>

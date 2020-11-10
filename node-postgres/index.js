@@ -14,7 +14,6 @@ app.use(function (req, res, next) {
   });
   
 app.post('/getUsers', (req, res) => {
-    console.log(req.body)
     sessions_model.getUsers(req.body)
     .then(response => {
         res.status(200).send(response);
@@ -25,17 +24,18 @@ app.post('/getUsers', (req, res) => {
     })
 })
 
-  app.post('/users', (req, res) => {
+  app.post('/createUser', (req, res) => {
+    console.log("/createUser")
     sessions_model.createUser(req.body)
     .then(response => {
       console.log(response);
       res.status(200).send(response);
     })
     .catch(error => {
+      console.log(error)
       res.status(500).send(error);
     })
   })
-
 
 
 app.listen(port, () => {

@@ -25,14 +25,15 @@ const getUsers = (body) => {
 
   const createUser = (body) => {
     return new Promise(function(resolve, reject) { 
-      const { userName, password } = body
-      console.log(userName, password);
-      pool.query('INSERT INTO users (user_name, password) VALUES ($1, $2) RETURNING *', [userName, password], (error, results) => {
+      const { user_id, user_password } = body
+      console.log(user_id, user_password);
+      pool.query('INSERT INTO users (user_name, password) VALUES ($1, $2)', [user_id, user_password], (error, results) => {
         if (error) {
           console.log(error);
           reject(error)
         }
-        resolve(`A new user has been added added: ${results}`)
+        console.log(results);
+        resolve(results)
       })
     })
   }

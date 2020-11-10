@@ -4,16 +4,18 @@ import { withRouter } from "react-router";
 import { Container, Row, Col, Button} from 'react-bootstrap';
 import "./Dashboard.css";
 import Splash from "./components/Splash/Splash";
-//import Pos from "./Pos";
-//import IndexDashboard from "./IndexDashboard";
-//import NotFound from "./404";
+import Spots from "./components/Spots/Spots";
+import Map from "./components/Map/Map";
+import Groups from "./components/Groups/Groups";
+import { bubble as Menu } from 'react-burger-menu';
 
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      islogout: false
+      islogout: false,
+      sessionUser: localStorage.getItem('user')
     };
   }  
 
@@ -23,6 +25,11 @@ class Dashboard extends Component {
       islogout: true
     });
   };
+
+  openProfile = () => {
+
+  }
+
   render() {
     if (this.state.islogout) {
       return <Redirect to="/login" />;
@@ -30,32 +37,51 @@ class Dashboard extends Component {
     const { match } = this.props;
     return (
       <div>
-        <ul>
-          <li>
-            <div class='styleHeader'>
-              <Link to={`${match.path}`}>Sessions</Link>
+
+        {/* first row is our header */}
+            <div className="styleHeader">
+              Sessions
+              <div className="push-right">
+                <Button variant='light' onClick={this.signOut}>
+                  Sign Out
+                </Button>
+              </div>
+              <div className="push-right">
+                <Button variant='light' >
+                  {this.state.sessionUser}
+                </Button>
+              </div>
             </div>
-          </li>
-          <li>
-            <div class='styleHeader'>
-              <Link to={`${match.path}/Splash`}>Spots</Link>
-            </div>
-          </li>
-          <li className="push-right">
-            <Button onClick={this.signOut} href="#">
-              Sign Out
-            </Button>
-          </li>
-        </ul>
-        <main role="main">
+        {/* second row is our main/body */}
+        
+          <br> 
+          </br>
+          <br>
+          </br>
+        <Menu width={"200px"}>
+          <a id="home" className="menu-item" href="/">Home</a>
+          <a id="spots" className="menu-item" href={`${match.path}/Spots`}>Spots</a>
+          <a id="map" className="menu-item" href={`${match.path}/Map`}>Map</a>
+          <a id="group" className="menu-item" href={`${match.path}/Groups`}>Groups</a>
+        </Menu>
+        
+        <main role="main"> 
           <div className="main">
             <Switch>
-            <Route path={`${match.path}/splash`}>
-                <Splash />
-            </Route>
+              
+              <Route path={`${match.path}/spots`}>
+                  <Spots />
+              </Route>
+              <Route path={`${match.path}/map`}>
+                  <Map />
+              </Route>
+              <Route path={`${match.path}/groups`}>
+                  <Groups />
+              </Route>
             </Switch>
           </div>
         </main>
+
       </div>
     );
   }
