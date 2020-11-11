@@ -26,7 +26,6 @@ const getUsers = (body) => {
   const createUser = (body) => {
     return new Promise(function(resolve, reject) { 
       const { user_id, user_password } = body
-      console.log(user_id, user_password);
       pool.query('INSERT INTO users (user_name, password) VALUES ($1, $2)', [user_id, user_password], (error, results) => {
         if (error) {
           reject(error)

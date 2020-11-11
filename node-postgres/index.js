@@ -40,7 +40,6 @@ app.use(function (req, res, next) {
   app.get('/getSpots', (req, res) => {
     sessions_model.getSpots()
     .then(response => {
-      console.log(response);
         res.status(200).send(response);
     })
     .catch(error => {
