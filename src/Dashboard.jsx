@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import { Container, Row, Col, Button} from 'react-bootstrap';
 import "./Dashboard.css";
 import Splash from "./components/Splash/Splash";
-import Spots from "./components/Spots/Spots";
+import Spots from "./components/Spots/Spots.js";
 import Map from "./components/Map/Map";
 import Groups from "./components/Groups/Groups";
 import { bubble as Menu } from 'react-burger-menu';
@@ -54,10 +54,7 @@ class Dashboard extends Component {
             </div>
         {/* second row is our main/body */}
         
-          <br> 
-          </br>
-          <br>
-          </br>
+      
         <Menu width={"200px"}>
           <a id="home" className="menu-item" href="/">Home</a>
           <a id="spots" className="menu-item" href={`${match.path}/Spots`}>Spots</a>
@@ -68,7 +65,11 @@ class Dashboard extends Component {
         <main role="main"> 
           <div className="main">
             <Switch>
-              
+              <Route path={`${match.path}/profile`}>
+              {/* When profile component is created uncomment this
+                <Profile />
+              */}
+              </Route>
               <Route path={`${match.path}/spots`}>
                   <Spots />
               </Route>

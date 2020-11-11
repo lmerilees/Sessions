@@ -13,7 +13,7 @@ app.use(function (req, res, next) {
     next();
   });
   
-app.post('/getUsers', (req, res) => {
+  app.post('/getUsers', (req, res) => {
     sessions_model.getUsers(req.body)
     .then(response => {
         res.status(200).send(response);
@@ -36,6 +36,18 @@ app.post('/getUsers', (req, res) => {
       res.status(500).send(error);
     })
   })
+
+  app.get('/getSpots', (req, res) => {
+    sessions_model.getSpots()
+    .then(response => {
+      console.log(response);
+        res.status(200).send(response);
+    })
+    .catch(error => {
+      console.log(error);
+        res.status(500).send(error);
+    })
+})
 
 
 app.listen(port, () => {

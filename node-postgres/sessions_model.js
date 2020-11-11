@@ -29,23 +29,22 @@ const getUsers = (body) => {
       console.log(user_id, user_password);
       pool.query('INSERT INTO users (user_name, password) VALUES ($1, $2)', [user_id, user_password], (error, results) => {
         if (error) {
-          console.log(error);
           reject(error)
         }
-        console.log(results);
         resolve(results)
       })
     })
   }
 
-  const deleteUser = () => {
+  const getSpots = () => {
     return new Promise(function(resolve, reject) {
-      const id = parseInt(request.params.id)
-      pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
+      //const id = parseInt(request.params.id)
+      pool.query('SELECT spot_name FROM spots', (error, results) => {
         if (error) {
           reject(error)
         }
-        resolve(`User deleted with ID: ${id}`)
+        //console.log(results);
+        resolve(results)
       })
     })
   }
@@ -53,5 +52,5 @@ const getUsers = (body) => {
   module.exports = {
     getUsers,
     createUser,
-    deleteUser,
+    getSpots,
   }
