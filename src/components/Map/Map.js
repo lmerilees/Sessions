@@ -58,33 +58,44 @@ class MapContainer extends Component {
     render() {
         return (
             <Container fluid>
-                <div align="center">
-                    <Row>
-                        <Col>
-                            <br></br>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Map
-                                google={this.props.google}
-                                style={mapStyles}
-                                initialCenter={{
-                                        lat: this.state.lat,
-                                        lng: this.state.lon
-                                    }}
-                                zoom={7}
-                            />
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            {/* find a better way to do this or put something here */}
-                          
-                            <br></br><br></br><br></br><br></br><br></br><br></br><br></br>
-                        </Col>
-                    </Row>
-                </div>
+                <div style={styleMain}>Map</div>
+                <Row>
+                    <Col>
+                    
+                        <div align="center">
+                            <Row>
+                                <Col>
+                                    <br></br>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Map
+                                        google={this.props.google}
+                                        style={mapStyles}
+                                        initialCenter={{
+                                                lat: this.state.lat,
+                                                lng: this.state.lon
+                                            }}
+                                        zoom={12}
+                                    />
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    {/* find a better way to do this or put something here */}
+                                
+                                    <br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+                                </Col>
+                            </Row>
+                        </div>
+
+                    </Col>
+                    <Col>
+                    <div style={styleMain}>Filters</div>
+                    </Col>
+
+                </Row>
             </Container>
         );
     }

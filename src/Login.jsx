@@ -81,6 +81,10 @@ class Login extends Component {
         <div className="container">
             <div className="styleBody">
             <div className="styleMain">Find your perfect skate session.</div>
+            <Row>
+              <Col>
+              </Col>
+              <Col>
               <form onSubmit={this.login} className="form-signin">
                 <div className="row">
                   <div className="col">
@@ -100,9 +104,17 @@ class Login extends Component {
                   </div>
                 </div>
               </form>
+
+
+
+
+              </Col>
+              <Col>
+              </Col>
+            </Row>
+              
             </div>
-        
-      </div>
+        </div>
       </div>
     );
   }
