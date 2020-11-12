@@ -2,7 +2,7 @@ import { Container, Row, Col, Button, ListGroup, Alert, ToggleButton, ToggleButt
 import { React, Component} from 'react';
 import { Route, Switch } from 'react-router'
 
-import "./Spots.css";
+import "./Home.css";
 
 
 const styleCol = {
@@ -14,7 +14,7 @@ const styleCol = {
     padding: '0px, 10px, 0px, 10px'
 }
 
-class Spots extends Component {
+class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -121,66 +121,50 @@ render() {
     return(
           <Container>
               <Row>
-                    <Col style={styleCol}>
+                    <Col>
 
-                      {/* Spot list */}
-                      <div className="styleMain">
-                          Spot List
-                      </div>
-                      <ListGroup>
+                        <div className="styleMain">
+                            News Feed
+                        </div>
+                        <ListGroup>
                           {this.state.spotList.map((spot, key) => (      
                               <ListGroup.Item eventKey={this.state.key} action href={`${this.props.path}/spots/${(String(spot).split(" ").join(""))}`}>{spot}</ListGroup.Item>
                           ))}
-                      </ListGroup>
-      
-                      {/* Checkboxes for spot filter */}
-                      <Row>
-                          <Button variant="light" size="sm" onClick={this.getSpots}>Select</Button>
-                          <ToggleButtonGroup type="checkbox" values="1" aria-label="Spot filters">
-                              <ToggleButton type="checkbox" checked="true" value="1">Ledges</ToggleButton>
-                              <ToggleButton type="checkbox" checked="true" value="1">Rails</ToggleButton>
-                              <ToggleButton type="checkbox" checked="true" value="1">Manual pad</ToggleButton>
-                              <ToggleButton type="checkbox" checked="true" value="1">Stairs</ToggleButton>
-                              <ToggleButton type="checkbox" checked="true" value="1">Banks</ToggleButton>
-                          </ToggleButtonGroup>
-                      </Row>
+                        </ListGroup>
+                        
                     </Col>
-      
 
-                  {/* This col is for spacing */}
+                    <Col>
+                    
+                    </Col>
+                        
                   <Col>
-                  </Col>
 
+                    <Row>
+                        <div className="styleMain">
+                            Recently Added Spots
+                        </div>
+                        <ListGroup>
+                          {this.state.spotList.map((spot, key) => (      
+                              <ListGroup.Item eventKey={this.state.key} action href={`${this.props.path}/spots/${(String(spot).split(" ").join(""))}`}>{spot}</ListGroup.Item>
+                          ))}
+                        </ListGroup>
+                    </Row>
 
-                  <Col style={styleCol}>            
-                    <div className="styleMain">Add a new spot
-
-                        {/* input form for creating a new spot */}
-                        <form id="form-create" onSubmit={this.createSpot} className="form-create">
-                            <input type='text' name='spot_name' placeholder="Spot Name" onChange={this.handleFormChange}/>
-                            <input type='text' name='location' placeholder="Location" onChange={this.handleFormChange}/>
-                            <input type='text' name='obstacles' placeholder="Obstacles" onChange={this.handleFormChange}/>
-                            <input type='text' name='security' placeholder="Security" onChange={this.handleFormChange}/>
-                            <Button onClick={this.createSpot}>Add Spot</Button>
-                        </form>                    
-                    </div>
+                    <Row>
+                        <div className="styleMain">
+                            Current Groups
+                        </div>
+                        <ListGroup>
+                          {this.state.spotList.map((spot, key) => (      
+                              <ListGroup.Item eventKey={this.state.key} action href={`${this.props.path}/spots/${(String(spot).split(" ").join(""))}`}>{spot}</ListGroup.Item>
+                          ))}
+                        </ListGroup>
+                    </Row>
 
                   </Col>
         
               </Row>
- 
-              {/* This needs to route each added spot to its own page blah */}
-              <main role="main"> 
-                <div className="main">
-                  <Switch>
-                  {this.state.spotList.map((spot) => (
-                    <Route path={`undefined/spots/${(String(spot).split(" ").join(""))}`}>
-                      {console.log("route")}
-                    </Route>
-                  ))}
-                  </Switch>
-                </div>
-              </main>
 
 
           </Container>
@@ -188,4 +172,4 @@ render() {
     }
 }
 
-export default Spots;
+export default Home;

@@ -5,6 +5,7 @@ import { Container, Row, Col, Button} from 'react-bootstrap';
 import "./Dashboard.css";
 import Splash from "./components/Splash/Splash";
 import Spots from "./components/Spots/Spots.js";
+import Home from "./components/Home/Home.js";
 import Map from "./components/Map/Map";
 import Groups from "./components/Groups/Groups";
 import { bubble as Menu } from 'react-burger-menu';
@@ -56,7 +57,7 @@ class Dashboard extends Component {
         
       
         <Menu width={"200px"}>
-          <a id="home" className="menu-item" href="/">Home</a>
+          <a id="home" className="menu-item" href={`${match.path}/Home`}>Home</a>
           <a id="spots" className="menu-item" href={`${match.path}/Spots`}>Spots</a>
           <a id="map" className="menu-item" href={`${match.path}/Map`}>Map</a>
           <a id="group" className="menu-item" href={`${match.path}/Groups`}>Groups</a>
@@ -69,6 +70,9 @@ class Dashboard extends Component {
               {/* When profile component is created uncomment this
                 <Profile />
               */}
+              </Route>
+              <Route path={`${match.path}/home`}>
+                  <Home />
               </Route>
               <Route path={`${match.path}/spots`}>
                   <Spots />

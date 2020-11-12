@@ -48,6 +48,18 @@ app.use(function (req, res, next) {
     })
 })
 
+  app.post('/createSpot', (req, res) => {
+    sessions_model.createSpot(req.body)
+    .then(response => {
+      //console.log(response);
+      res.status(200).send(response);
+    })
+    .catch(error => {
+      //console.log(error);
+      res.status(500).send(error);
+    })
+  })
+
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
 })

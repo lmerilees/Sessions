@@ -1,6 +1,6 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
 import {React, Component } from 'react';
-import { Map, GoogleApiWrapper } from 'google-maps-react'
+import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
 
 const mapStyles = {
     width: '512px',
@@ -29,8 +29,10 @@ class MapContainer extends Component {
         super(props)
         this.state = {
             errorMessage: null,
-            lat: 52.12,
-            lon: -106.67,
+            lat: "",
+            lon: "",
+            user_lat: 52.12,
+            user_lon: -106.67,
         }        
     }
 
@@ -40,19 +42,42 @@ class MapContainer extends Component {
        this.getLocation();
     }
 
-    componentWillUnmount() {
-        // we need to clear the timer when the component unmounts to prevent memory leaks
-        clearInterval(this.interval);
-    }
-
     /**
-     * Get geolocation of device and store latitude and longitude in states
+     * Get geolocation of user and store latitude and longitude in states
      */
     getLocation() {
         navigator.geolocation.getCurrentPosition((position) => {
-            this.setState({lat: position.coords.latitude, lon: position.coords.longitude});
-            // if successful, proceed to make API request
+            this.setState({user_lat: position.coords.latitude, user_lon: position.coords.longitude});
         }, (error) => this.setState({errorMessage: error}))
+    }
+
+    // convert address to coordinates so that can be marked on the map
+    getCoordinates() {
+        let API = "648f721923c5e9d95de6fc8b69c904a2"
+        fetch("https://maps.googleapis.com/maps/api/geocode/json?address=601+Spadina+Crescent,+Saskatoon,+SK&key=AIzaSyDRkknHDMFkSTIXzpRnySLykWf659-wzio")
+        .then(async response => {
+            const data = await response.json();
+            // check if reponse is an error
+            if (!response.ok) { // get error message or default reponse
+                const err = (data && data.message) || response.status;
+                return Promise.reject(err);
+            }
+
+            // otherwise set states
+            this.setState({
+                lat: data.results[0].geometry.location.lat,
+                lon: data.results[0].geometry.location.lng
+            })
+
+        }).catch(err => {
+            this.setState({errorMessage: err});
+            console.error("An error occured", err);
+        });
+    }
+    
+
+    componentDidMount() {
+        this.getCoordinates();
     }
 
     render() {
@@ -74,11 +99,23 @@ class MapContainer extends Component {
                                         google={this.props.google}
                                         style={mapStyles}
                                         initialCenter={{
-                                                lat: this.state.lat,
-                                                lng: this.state.lon
+                                                lat: this.state.user_lat,
+                                                lng: this.state.user_lon
                                             }}
                                         zoom={12}
-                                    />
+                                        hoverDistance={100}>
+
+                                        <Marker key="marker_1"
+                                        position={{
+                                        lat: this.state.lat,
+                                        lng: this.state.lon,
+                                        text: "My location"
+                                        }}
+                                        />
+
+                                    </Map>
+                                    
+
                                 </Col>
                             </Row>
                             <Row>

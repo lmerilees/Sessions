@@ -37,12 +37,22 @@ const getUsers = (body) => {
 
   const getSpots = () => {
     return new Promise(function(resolve, reject) {
-      //const id = parseInt(request.params.id)
       pool.query('SELECT spot_name FROM spots', (error, results) => {
         if (error) {
           reject(error)
         }
-        //console.log(results);
+        resolve(results)
+      })
+    })
+  }
+  
+  const createSpot = (body) => {
+    return new Promise(function(resolve, reject) { 
+      const { spot_name, location, image, details, rating, security, obstacles, challenges } = body
+      pool.query('INSERT INTO spots (spot_name, location, image, details, rating, security, obstacles, challenges) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [spot_name, location, image, details, rating, security, obstacles, challenges], (error, results) => {
+        if (error) {
+          reject(error)
+        }
         resolve(results)
       })
     })
@@ -52,4 +62,5 @@ const getUsers = (body) => {
     getUsers,
     createUser,
     getSpots,
+    createSpot,
   }
