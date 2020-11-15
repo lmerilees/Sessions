@@ -5,14 +5,12 @@ import { Route, Switch } from 'react-router'
 import "./Home.css";
 
 
-const styleCol = {
-    color: 'white',
-    fontSize: '20px',
-    textAlign: 'center',
-    justifyContent: 'center',
-    fontFamily: 'consolas',
-    padding: '0px, 10px, 0px, 10px'
+const ListGroupStyle = {
+  maxHeight: '500px',
+  minWidth: '200px',
+  overflowY: 'scroll',
 }
+
 
 class Home extends Component {
     constructor(props) {
@@ -65,42 +63,6 @@ class Home extends Component {
             });
           }
 
-        createSpot = event => {
-            let spot_name = this.state.createParams.spot_name;
-            let location = this.state.createParams.location;
-            let image = this.state.createParams.image;
-            let details = this.state.createParams.details;
-            let rating = this.state.createParams.rating;
-            let obstacles = this.state.createParams.obstacles;
-            let security = this.state.createParams.security;
-            let challenges = this.state.createParams.challenges;
-            fetch('http://localhost:3001/createSpot', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({spot_name, location, image, details, rating, obstacles, security, challenges})
-              })
-            .then(async response => {
-              const data = await response.json();
-              if (!response.ok) { // get error message or default reponse
-                const err = (data && data.message) || response.status;
-                return Promise.reject(err);
-            }
-
-            // repopulate the spotlist to reflect addition
-            this.getSpots();
-
-            // let user know they added a new spot successfully
-            alert(this.state.createParams.spot_name + " has been added!");
-
-            // clear create forms 
-            document.getElementById("form-create").reset();
-
-            }).catch(err => {
-              console.error("an error occured", err);
-            });
-        }
 
         handleFormChange = event => {
             let createParamsNew = { ...this.state.createParams };
@@ -119,53 +81,50 @@ class Home extends Component {
 render() {
   const { match } = this.props;
     return(
-          <Container>
+          <Container fluid>
               <Row>
-                    <Col>
 
+                <Col lg={1} md={1} sm={1}>
+                </Col>
+
+                <Col>
                         <div className="styleMain">
                             News Feed
                         </div>
-                        <ListGroup>
+                        <ListGroup style={ListGroupStyle}>
                           {this.state.spotList.map((spot, key) => (      
                               <ListGroup.Item eventKey={this.state.key} action href={`${this.props.path}/spots/${(String(spot).split(" ").join(""))}`}>{spot}</ListGroup.Item>
                           ))}
                         </ListGroup>
                         
-                    </Col>
+                </Col>
 
-                    <Col>
-                    
+                    <Col lg={2} md={1} sm={1}>
                     </Col>
                         
                   <Col>
 
-                    <Row>
+                    
                         <div className="styleMain">
                             Recently Added Spots
                         </div>
-                        <ListGroup>
+                        <ListGroup style={ListGroupStyle}>
                           {this.state.spotList.map((spot, key) => (      
                               <ListGroup.Item eventKey={this.state.key} action href={`${this.props.path}/spots/${(String(spot).split(" ").join(""))}`}>{spot}</ListGroup.Item>
                           ))}
                         </ListGroup>
-                    </Row>
-
-                    <Row>
+      
                         <div className="styleMain">
                             Current Groups
-                        </div>
-                        <ListGroup>
-                          {this.state.spotList.map((spot, key) => (      
-                              <ListGroup.Item eventKey={this.state.key} action href={`${this.props.path}/spots/${(String(spot).split(" ").join(""))}`}>{spot}</ListGroup.Item>
-                          ))}
-                        </ListGroup>
-                    </Row>
+                        </div>       
 
                   </Col>
-        
-              </Row>
 
+
+                  <Col lg={1} md={1} sm={1}>
+                  </Col>
+
+              </Row>
 
           </Container>
       );

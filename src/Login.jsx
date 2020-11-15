@@ -1,7 +1,22 @@
 import React, { Component } from "react";
 import "./Login.css";
-import { Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import {Row, Col, Container, Button} from 'react-bootstrap';
+import Signup from "./Signup";
+
+
+  // style
+  const styleHeader = {
+    color: 'white',
+    fontSize: '50px',
+    fontFamily: 'consolas',
+    float: 'left',
+  }
+
+  const styleSignupBut = {
+    fontSize: '10px',
+    fontFamily: 'consolas'
+  }
 
 class Login extends Component {
   constructor(props) {
@@ -70,14 +85,26 @@ class Login extends Component {
     if (localStorage.getItem("token")) {
       return <Redirect to="/" />;
     }
+    const { match } = this.props;
     return (
-      <div>
-        <div className="styleHeader">
-          Sessions
-          <div className="push-right">
-          <Button variant="light" onClick={this.signUp}>Sign Up</Button>
-          </div>
-        </div>
+      <Container fluid>
+        
+        {/* first row is our header */}
+        <Row>
+              <Col style={styleHeader} lg={10} md={10} sm={8}>
+                Sessions
+              </Col>
+
+              <Col style={styleSignupBut} lg={2} md={2} sm={4}> 
+                  <Button variant='primary' size="sm" onClick={this.signUp} href={`/Signup`}>
+                    Sign Up
+                  </Button>
+              </Col>
+        </Row>
+
+        <Row>
+          {/* This row is for spacing */}
+        </Row>
         <div className="container">
             <div className="styleBody">
             <div className="styleMain">Find your perfect skate session.</div>
@@ -105,17 +132,27 @@ class Login extends Component {
                 </div>
               </form>
 
-
-
-
               </Col>
               <Col>
               </Col>
             </Row>
               
             </div>
-        </div>
-      </div>
+          </div>
+
+            
+            <main role="main"> 
+              <div className="main">
+                <Switch>
+                  <Route path={`/signup`}>
+                    <Signup/>
+                  </Route>
+
+                </Switch>
+              </div>
+            </main>  
+
+      </Container>
     );
   }
 }

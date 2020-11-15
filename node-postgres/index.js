@@ -24,15 +24,25 @@ app.use(function (req, res, next) {
     })
 })
 
+app.post('/getProfile', (req, res) => {
+  sessions_model.getProfile(req.body)
+  .then(response => {
+      //console.log(response);
+      res.status(200).send(response);
+  })
+  .catch(error => {
+    //console.log(error);
+      res.status(500).send(error);
+  })
+})
+
   app.post('/createUser', (req, res) => {
     console.log("/createUser")
     sessions_model.createUser(req.body)
     .then(response => {
-      console.log(response);
       res.status(200).send(response);
     })
     .catch(error => {
-      console.log(error)
       res.status(500).send(error);
     })
   })

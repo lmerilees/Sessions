@@ -7,14 +7,15 @@
 
 .styleMain {
     color: 'white';
-    font-size: '50px';
+    font-size: '40px';
     text-align: 'center';
     justify-content: 'center';
     font-family: 'consolas';
 }
 
+
+
 .ListGroup{
-    height: '70px';
-    min-width: '200px';
+    height:70px;
     overflow-y: scroll;
 }

@@ -17,7 +17,18 @@ const getUsers = (body) => {
         if (error) {
           reject(error)
         }
-        //console.log(results.rows.length)
+        resolve(results);
+      })
+    }) 
+  }
+
+  const getProfile = (body) => {
+    return new Promise(function(resolve, reject) {
+      const { user_id } = body
+      pool.query('SELECT * FROM users WHERE user_name = $1', [user_id], (error, results) => {
+        if (error) {
+          reject(error)
+        }
         resolve(results);
       })
     }) 
@@ -63,4 +74,5 @@ const getUsers = (body) => {
     createUser,
     getSpots,
     createSpot,
+    getProfile
   }

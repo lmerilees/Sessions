@@ -11,7 +11,13 @@ const styleCol = {
     textAlign: 'center',
     justifyContent: 'center',
     fontFamily: 'consolas',
-    padding: '0px, 10px, 0px, 10px'
+    padding: '0px, 10px, 0px, 10px',
+    minWidth: '200px'
+}
+
+const styleList = {
+  maxHeight: '400px',
+  overflowY: 'scroll',
 }
 
 class Spots extends Component {
@@ -119,15 +125,15 @@ class Spots extends Component {
 render() {
   const { match } = this.props;
     return(
-          <Container>
+          <Container fluid>
               <Row>
+                  <Col lg={1} md={1} sm={1}>
+                  </Col>
                     <Col style={styleCol}>
 
                       {/* Spot list */}
-                      <div className="styleMain">
-                          Spot List
-                      </div>
-                      <ListGroup>
+                      <div className="styleMain">Spot List</div>
+                      <ListGroup style={styleList}>
                           {this.state.spotList.map((spot, key) => (      
                               <ListGroup.Item eventKey={this.state.key} action href={`${this.props.path}/spots/${(String(spot).split(" ").join(""))}`}>{spot}</ListGroup.Item>
                           ))}
@@ -148,7 +154,7 @@ render() {
       
 
                   {/* This col is for spacing */}
-                  <Col>
+                  <Col lg={2} md={1} sm={1}>
                   </Col>
 
 
@@ -167,6 +173,8 @@ render() {
 
                   </Col>
         
+                  <Col lg={1} md={1} sm={1}>
+                  </Col>
               </Row>
  
               {/* This needs to route each added spot to its own page blah */}

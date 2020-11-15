@@ -1,8 +1,21 @@
 import React, { Component } from "react";
 import "./Login.css";
-import { Redirect } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { Button, Container, Row, Col } from "react-bootstrap";
 
+
+  // style
+  const styleHeader = {
+    color: 'white',
+    fontSize: '50px',
+    fontFamily: 'consolas',
+    float: 'left',
+  }
+
+  const styleSignupBut = {
+    fontSize: '10px',
+    fontFamily: 'consolas'
+  }
 
 class Signup extends Component {
   constructor(props) {
@@ -67,16 +80,32 @@ class Signup extends Component {
       return <Redirect to="/" />;
     }
     return (
-      <div>
+      <Container fluid>
+        {/* first row is our header */}
         <Row>
-          <div className="styleHeader">
-            Sessions
-          </div>
+              <Col style={styleHeader} lg={10} md={10} sm={8}>
+                Sessions
+              </Col>
+
+              <Col style={styleSignupBut} lg={2} md={2} sm={4}> 
+                  <Button variant='primary' size="sm"  href={`/Login`}>
+                    Log in
+                  </Button>
+              </Col>
         </Row>
-        <div className="container">
+
         <Row>
-          <form onSubmit={this.Signup} className="form-signin">
-            <div className="styleMain">Sign up to get started</div>
+          {/* This row is for spacing */}
+        </Row>
+
+        <div className="container">
+          <div className="styleBody">
+          <div className="styleMain">Sign up to start your session.</div>
+          <Row>
+            <Col>
+            </Col>
+            <Col>
+            <form onSubmit={this.Signup} className="form-signin">
             <div className="row">
               <div className="col">
                 <input
@@ -94,10 +123,30 @@ class Signup extends Component {
                 <input type="submit" value="Sign Up" />
               </div>
             </div>
-          </form>
-        </Row>
+            </form>
+
+
+            </Col>
+            <Col>
+
+           </Col>
+          </Row>
+
+        </div>
       </div>
-      </div>
+      
+      <main role="main"> 
+              <div className="main">
+                <Switch>
+                  <Route path={`/login`}>
+                    <Signup/>
+                  </Route>
+
+                </Switch>
+              </div>
+            </main>  
+
+      </Container>
     );
   }
 }

@@ -1,17 +1,5 @@
-.styleHeader {
-  color: white;
-  font-size: 50px;
-  padding: 10px 0px 0px 20px;
-}
-
-.styleMenu {
-  color: white;
-  font-size: 30px;
-}
- 
-.push-right {
-  float: right;
-  padding-right: 20px;
+body {
+  font-family: Consolas;
 }
 
 /* Position and sizing of burger button */
