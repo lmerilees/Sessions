@@ -42,10 +42,11 @@ import { bubble as Menu } from 'react-burger-menu';
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+    this.handler = this.handler.bind(this)
     this.state = {
       islogout: false,
       sessionUser: localStorage.getItem('user'),
-      userRep: null,
+      userRep: 0,
     };
   }  
 
@@ -71,11 +72,13 @@ class Dashboard extends Component {
           const err = (data && data.message) || response.status;
           return Promise.reject(err);
       }
-
-      // update our states
-      this.setState({
-        userRep: data.rows[0].reputation
-      })
+  
+      if(data.rows[0].reputation != null){
+        // update our states
+        this.setState({
+          userRep: data.rows[0].reputation
+        })
+      }
       
       //this.setState.spotList.push(data);
       }).catch(err => {
@@ -85,6 +88,11 @@ class Dashboard extends Component {
 
   componentDidMount() {
     this.getUserRep();
+  }
+
+  handler() {
+    this.getUserRep();
+    console.log("handler");
   }
 
   render() {
@@ -130,19 +138,19 @@ class Dashboard extends Component {
               <div className="main">
                 <Switch>
                   <Route path={`${match.path}/profile`}>
-                    <Profile />
+                    <Profile handler = {this.handler} rep={this.userRep} userReps={this.getUserRep}/>
                   </Route>
                   <Route path={`${match.path}/home`}>
-                      <Home />
+                      <Home handler = {this.handler} userReps={this.getUserRep}/>
                   </Route>
                   <Route path={`${match.path}/spots`}>
-                      <Spots />
+                      <Spots handler = {this.handler} userReps={this.getUserRep}/>
                   </Route>
                   <Route path={`${match.path}/map`}>
-                      <Map />
+                      <Map handler = {this.handler} userReps={this.getUserRep}/>
                   </Route>
                   <Route path={`${match.path}/groups`}>
-                      <Groups />
+                      <Groups handler = {this.handler} userReps={this.getUserRep}/>
                   </Route>
                 </Switch>
               </div>

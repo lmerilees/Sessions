@@ -68,11 +68,41 @@ const getUsers = (body) => {
       })
     })
   }
+
+  const modifyProfile = (body) => {
+    return new Promise(function(resolve, reject) { 
+      const { image, reputation, age, stance, location, board, trucks, wheels, bearings, shoes, favourite_clip, user_name } = body
+      pool.query('UPDATE users SET image = $1, age = $2, stance = $3, location = $4, board = $5, trucks = $6, wheels = $7, bearings = $8, shoes = $9, favourite_clip = $10 WHERE user_name = $11 RETURNING *', [image, age, stance, location, board, trucks, wheels, bearings, shoes, favourite_clip, user_name], (error, results) => {
+        if (error) {
+          //console.log(error);
+          reject(error)
+        }
+        //console.log(results);
+        resolve(results)
+      })
+    })
+  }
+
+  const updateRep = (body) => {
+    return new Promise(function(resolve, reject) { 
+      const { reputation, user_name } = body
+      pool.query('UPDATE users SET reputation = $1 WHERE user_name = $2 RETURNING *', [reputation, user_name], (error, results) => {
+        if (error) {
+          //console.log(error);
+          reject(error)
+        }
+        //console.log(results);
+        resolve(results)
+      })
+    })
+  }
   
   module.exports = {
     getUsers,
     createUser,
     getSpots,
     createSpot,
-    getProfile
+    getProfile,
+    modifyProfile,
+    updateRep
   }

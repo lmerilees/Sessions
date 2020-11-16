@@ -24,8 +24,10 @@ class Spots extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            sessionUser: localStorage.getItem('user'),
             spotList: [],
             key: 0,
+            userRep: this.props.rep,
             createParams: {
                 spot_name: "",
                 location: "",
@@ -38,6 +40,68 @@ class Spots extends Component {
               }
         };
       }  
+
+      getUserRep = event => {
+        console.log(this.state.userRep);
+        let user_id = this.state.sessionUser;
+          fetch('http://localhost:3001/getProfile', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({user_id: user_id}),
+            })
+          .then(async response => {
+            const data = await response.json();
+            if (!response.ok) { // get error message or default reponse
+              const err = (data && data.message) || response.status;
+              return Promise.reject(err);
+          }
+      
+          // update our states
+          this.setState({
+            userRep: data.rows[0].reputation
+          })
+
+          this.props.handler();
+
+          //this.setState.spotList.push(data);
+          }).catch(err => {
+            console.error("an error occured", err);
+          });
+        }
+
+      updateRep = () => {
+
+        let user_name = this.state.sessionUser;
+        console.log(this.state.userRep);
+        let reputation = this.state.userRep + 1
+      
+        fetch('http://localhost:3001/updateRep', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({reputation, user_name})
+          })
+        .then(async response => {
+          const data = await response.json();
+          if (!response.ok) { // get error message or default reponse
+            const err = (data && data.message) || response.status;
+            return Promise.reject(err);
+        }
+
+        console.log(data)
+          // update our states
+          this.setState({
+            userRep: data.rows[0].reputation
+          })
+          this.props.handler();
+
+        }).catch(err => {
+          console.error("an error occured", err);
+        });
+    }
 
         getSpots() {
             fetch('http://localhost:3001/getSpots', {
@@ -97,6 +161,9 @@ class Spots extends Component {
             // repopulate the spotlist to reflect addition
             this.getSpots();
 
+            // increate reputation for adding a new spot
+            this.updateRep();
+
             // let user know they added a new spot successfully
             alert(this.state.createParams.spot_name + " has been added!");
 
@@ -120,10 +187,11 @@ class Spots extends Component {
     // load spots when component is rendered for the first time
     componentDidMount() {
         this.getSpots();
+        this.getUserRep();
     }
       
 render() {
-  const { match } = this.props;
+  const { match, userReps } = this.props;
     return(
           <Container fluid>
               <Row>

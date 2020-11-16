@@ -1,4 +1,4 @@
-import { Container, Row, Col, Button, ListGroup, Alert, ToggleButton, ToggleButtonGroup, ButtonGroup, InputGroup, FormControl, Image, Modal } from "react-bootstrap";
+import { Container, Row, Col, Button, ListGroup, Alert, ToggleButton, ToggleButtonGroup, ButtonGroup, InputGroup, Form, FormControl, Image, Modal, Card } from "react-bootstrap";
 import { React, Component} from 'react';
 import { Route, Switch } from 'react-router'
 
@@ -15,11 +15,23 @@ const styleBut = {
 
 const styleMain = {
   color: 'white',
-  fontSize: '40px',
+  fontSize: '30px',
   textAlign: 'center',
   justifyContent: 'center',
   fontFamily: 'consolas',
 }
+
+const styleSection = {
+  color: 'white',
+  fontSize:'30px',
+}
+
+const cardBodyStyle = {
+  color: "black",
+  fontSize: "20px",
+  textAlign: 'left'
+}
+
 
 class Profile extends Component {
     constructor(props) {
@@ -29,19 +41,25 @@ class Profile extends Component {
             infoModal: false,
             setupModal: false,
             createParams: {
-                reputation: "",
                 image: "",
-                info: "",
-                setup: "",
+                reputation: 0,
+                age: 0,
+                stance: "",
+                location: "Saskatoon",
+                board: "",
+                trucks: "",
+                wheels: "",
+                bearings: "",
+                shoes: "",
+                favourite_clip: "Add your favourite clip to show off your skills!",
                 badges: "Badges earned will be displayed here. Get skating!",
-                favourite_clip: "",
               }
         };
         this.toggle = this.toggle.bind(this);
         this.toggle2 = this.toggle2.bind(this);
       }  
 
-        getUserInfo = event => {
+        getUserInfo = () => {
           let user_id = this.state.sessionUser;
             fetch('http://localhost:3001/getProfile', {
                 method: 'POST',
@@ -57,18 +75,22 @@ class Profile extends Component {
                 return Promise.reject(err);
             }
 
-
-            console.log(data);
-            // add spot names to our array
-            let spotArray = []
-            for(let i = 0; i < data.rowCount; i++){
-                //console.log(data.rows[i].spot_name);
-                //spotArray.push(data.rows[i].spot_name);
-            }
-
             // update our states
             this.setState({
-              image: data
+              createParams: {
+                age: data.rows[0].age,
+                badges: data.rows[0].badges,
+                reputation: data.rows[0].reputation,
+                bearings: data.rows[0].bearings,
+                favourite_clip: data.rows[0].favourite_clip,
+                image: data.rows[0].image,
+                location: data.rows[0].location,
+                shoes: data.rows[0].shoes,
+                stance: data.rows[0].stance,
+                trucks: data.rows[0].trucks,
+                wheels: data.rows[0].wheels,
+                board: data.rows[0].board
+              }
             })
             
             //this.setState.spotList.push(data);
@@ -77,18 +99,34 @@ class Profile extends Component {
             });
           }
 
-        modifyDetails = event => {
-            let info = this.state.createParams.info;
+        modifyDetails = () => {
+            if(this.state.infoModal == true){
+              this.toggle();
+            }
+            if(this.state.setupModal == true){
+              this.toggle2();
+            }
+            
+
             let image = this.state.createParams.image;
-            let setup = this.state.createParams.setup;
             let reputation = this.state.createParams.repuation;
+            let age = this.state.createParams.age;
+            let stance = this.state.createParams.stance;
+            let location = this.state.createParams.location;
+            let board = this.state.createParams.board;
+            let trucks = this.state.createParams.trucks;
+            let wheels = this.state.createParams.wheels;
+            let bearings = this.state.createParams.bearings;
+            let shoes = this.state.createParams.shoes;
+            let favourite_clip = this.state.createParams.favourite_clip;
             let badges = this.state.createParams.badges;
-            fetch('http://localhost:3001/modifyUser', {
+            let user_name = this.state.sessionUser;
+            fetch('http://localhost:3001/modifyProfile', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({info, image, setup, reputation, badges})
+                body: JSON.stringify({image, reputation, age, stance, location, board, trucks, wheels, bearings, shoes, favourite_clip, user_name})
               })
             .then(async response => {
               const data = await response.json();
@@ -96,15 +134,8 @@ class Profile extends Component {
                 const err = (data && data.message) || response.status;
                 return Promise.reject(err);
             }
-
             // repopulate the spotlist to reflect addition
-            this.getProfile();
-
-            // let user know they added a new spot successfully
-            alert(this.state.createParams.spot_name + " has been added!");
-
-            // clear create forms 
-            document.getElementById("form-create").reset();
+            this.getUserInfo();
 
             }).catch(err => {
               console.error("an error occured", err);
@@ -155,53 +186,109 @@ render() {
 
 
                   <Col lg={1}>            
-                
+
                   </Col>
         
               </Row>
 
               <Row>
-                 
-                  <Col style={styleMain}>
-                      <div> Basic Info</div>
-                      <div><Button size="sm" onClick={this.toggle}>Edit Info</Button></div>
-                      
-                      <Image src='./holder.png' roundedCircle />
-                      
+                 <Col lg={2} md={2} sm={1}>
+                 </Col>
+                  <Col>
+                    <div style={styleSection}> Basic Info </div>
+                    <Card bg='light' style={{ width: '25rem' }}>
+                      <Card.Img variant="top" src="holder.png/100px180" />
+                      <Card.Body>
+                        <Card.Text style={cardBodyStyle}>
+                          Name: {this.state.sessionUser} <br/>
+                          Age: {this.state.createParams.age} <br/>
+                          Stance: {this.state.createParams.stance} Footed<br/>
+                          Location: {this.state.createParams.location}
+                        </Card.Text>
+                        <Button size="sm" onClick={this.toggle}>Edit Info</Button>
+                      </Card.Body>
+                    </Card>
                       
                      
                       <div id="InfoModal">
+
                         <Modal show={this.state.infoModal}>
                           <Modal.Header>
                             <Modal.Title>Update Basic Info</Modal.Title>
                           </Modal.Header>
                           <Modal.Body>
                             <Col>
-                              {/* input form for creating a new spot */}
-                              <form id="form-create" onSubmit={this.createSpot} className="form-create">
-                                  <input type='text' name='stance' placeholder="Stance" onChange={this.handleFormChange}/>
-                                  <input type='text' name='age' placeholder="Age" onChange={this.handleFormChange}/>
-                                  <input type='text' name='location' placeholder="Location" onChange={this.handleFormChange}/>
-                              </form>  
+
+                              <Form>
+                                <Form.Group controlId="form-stance">
+                                  <Form.Label>Stance: </Form.Label>
+                                  <Form.Control type="text" name='stance' placeholder={this.state.createParams.stance} onChange={this.handleFormChange}/>
+                                </Form.Group>
+
+                                <Form.Group controlId="form-age">
+                                  <Form.Label>Age: </Form.Label>
+                                  <Form.Control type="text" name='age' placeholder={this.state.createParams.age} onChange={this.handleFormChange}/>
+                                </Form.Group>
+
+                                <Form.Group controlId="form-location">
+                                  <Form.Label>Location: </Form.Label>
+                                  <Form.Control type="text" name='location' placeholder={this.state.createParams.location} onChange={this.handleFormChange}/>
+                                </Form.Group>
+                              
+                              </Form>
+                              
                             </Col> 
+
                           </Modal.Body>
-                          <Modal.Footer><Button onClick={this.toggle}>Submit</Button></Modal.Footer>
+                          <Modal.Footer><Button onClick={this.modifyDetails}>Submit</Button></Modal.Footer>
                         </Modal>
                       </div>
 
                   </Col>
+                  <Col lg={1} md={1} sm={1}>
+                  </Col>
 
-                  <Col style={styleMain}>
-                    <div>My Favourite Clip</div>
-                    <Image src='./holder.png' roundedCircle />
+                  <Col>
+                    <div style={styleSection}> My Favourite Clip </div>
+                      <Card bg='light' style={{ width: '25rem' }}>
+                        <Card.Img variant="top" src="holder.png/100px180" />
+                        <Card.Body>
+                          <Card.Text style={cardBodyStyle}>
+                            Upload your favourite clip here!
+                          </Card.Text>
+                          <Form>
+                            <Form.File 
+                              id="custom-file"
+                              label="Upload Your Clip"
+                              custom
+                            />
+                          </Form>
+                        </Card.Body>
+                      </Card>
                   </Col>
 
               </Row>
 
               <Row>
+              <Col lg={2} md={2} sm={1}>
+                 </Col>
                   <Col>
-                    <div className="styleMain">Current Setup</div>
-                    <div><Button size="sm" onClick={this.toggle2}>Edit Info</Button></div>
+                  <div style={styleSection}> Current Setup </div>
+
+                    <Card bg='light' style={{ width: '25rem' }}>
+                      <Card.Img variant="top" src="holder.png/100px180" />
+                      <Card.Body>
+                        <Card.Text style={cardBodyStyle}>
+                          Board: {this.state.createParams.board} <br/>
+                          Trucks: {this.state.createParams.trucks} <br/>
+                          Wheels: {this.state.createParams.wheels} <br/>
+                          Bearings: {this.state.createParams.bearings} <br/>
+                          Shoes: {this.state.createParams.shoes} <br/>
+                        </Card.Text>
+                        <Button size="sm" onClick={this.toggle2}>Edit Info</Button>
+                      </Card.Body>
+                    </Card>
+
                     <div id="SetupModal">
                         <Modal show={this.state.setupModal}>
                           <Modal.Header>
@@ -209,19 +296,52 @@ render() {
                           </Modal.Header>
                           <Modal.Body>
                             <Col>
-                              Board:
-                              Trucks:
-                              Wheels:
-                              Shoes:
-                            </Col> 
+
+                            <Form>
+                              <Form.Group controlId="form-board">
+                                <Form.Label>Board: </Form.Label>
+                                <Form.Control type="text" name='board' placeholder={this.state.createParams.board} onChange={this.handleFormChange}/>
+                              </Form.Group>
+
+                              <Form.Group controlId="form-trucks">
+                                <Form.Label>Trucks: </Form.Label>
+                                <Form.Control type="text" name='trucks' placeholder={this.state.createParams.trucks} onChange={this.handleFormChange}/>
+                              </Form.Group>
+
+                              <Form.Group controlId="form-wheels">
+                                <Form.Label>Wheels: </Form.Label>
+                                <Form.Control type="text" name='wheels' placeholder={this.state.createParams.wheels} onChange={this.handleFormChange}/>
+                              </Form.Group>
+
+                              <Form.Group controlId="form-bearings">
+                                <Form.Label>Bearings: </Form.Label>
+                                <Form.Control type="text" name='bearings' placeholder={this.state.createParams.bearings} onChange={this.handleFormChange}/>
+                              </Form.Group>
+
+                              <Form.Group controlId="form-shoes">
+                                <Form.Label>Shoes: </Form.Label>
+                                <Form.Control type="text" name='shoes' placeholder={this.state.createParams.shoes} onChange={this.handleFormChange}/>
+                              </Form.Group>
+
+                            </Form>
+
+                            </Col>  
                           </Modal.Body>
-                          <Modal.Footer><Button onClick={this.toggle2}>Submit</Button></Modal.Footer>
+                          <Modal.Footer><Button onClick={this.modifyDetails}>Submit</Button></Modal.Footer>
                         </Modal>
                       </div>
                   </Col>
+                  <Col lg={1} md={1} sm={1}></Col>
                   <Col>
-                    <div className="styleMain">Badges</div>
-                    <div className="styleMain">{this.state.badges}</div>
+                    <div style={styleSection}> Badges </div>
+                        <Card bg='light' style={{ width: '25rem' }}>
+                          <Card.Img variant="top" src="holder.png/100px180" />
+                          <Card.Body>
+                            <Card.Text style={cardBodyStyle}>
+                              Get skating to earn badges!
+                            </Card.Text>
+                          </Card.Body>
+                        </Card>
                   </Col>
               </Row>
  
