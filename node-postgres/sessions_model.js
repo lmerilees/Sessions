@@ -48,7 +48,7 @@ const getUsers = (body) => {
 
   const getSpots = () => {
     return new Promise(function(resolve, reject) {
-      pool.query('SELECT spot_name FROM spots', (error, results) => {
+      pool.query('SELECT * FROM spots', (error, results) => {
         if (error) {
           reject(error)
         }

@@ -22,8 +22,6 @@ import ProtectedRoute from "./ProtectedRoute";
 //import {BrowserRouter, browserHistory, NavLink, Redirect, Route, Switch} from 'react-router-dom';
 import {Container, Button, Row, Col, Nav, Navbar } from 'react-bootstrap';
 
-
-
 function App() {
   return (
     <Router>
