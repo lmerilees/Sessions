@@ -1,17 +1,16 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
 import {React, Component } from 'react';
-import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react'
+import { Google, Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react'
 
 const mapStyles = {
-    width: '512px',
-    height: '512px',
-    position: "fixed",
-    zIndex: 0,
+    width: '800px',
+    height: '550px',
+    position: "fixed"
 };
 
-const styleHeader = {
+const styleFilter = {
     color: 'white',
-    fontSize: '50px',
+    fontSize: '30px',
     padding: '10px',
     fontFamily: 'consolas',
 }
@@ -22,6 +21,20 @@ const styleMain = {
     textAlign: 'center',
     justifyContent: 'center',
     fontFamily: 'consolas',
+}
+
+const styleInfoWindowHeader = {
+    fontSize: '20px',
+    fontFamily: 'consolas',
+    fontWeight: 'bold'
+}
+
+const styleInfoWindowbody = {
+    fontSize: '15px',
+    fontFamily: 'consolas',
+    justifyContent: 'left',
+    textAlign: 'left',
+    float: 'left'
 }
 
 const markerArray = [];
@@ -77,7 +90,14 @@ class MapContainer extends Component {
                 location: {
                     lat: loc.lat,
                     lng: loc.lng
-                }
+                },
+                obstacles: spot.obstacles,
+                address: spot.location,
+                image: spot.image,
+                details: spot.details,
+                rating: spot.rating,
+                security: spot.security,
+                challenges: spot.challenges
             })
 
         }).catch(err => {
@@ -126,7 +146,6 @@ class MapContainer extends Component {
     }
 
     onInfoWindowClose = () =>{
-        console.log("close")
         this.setState({
         showingInfoWindow: false
         });
@@ -144,17 +163,8 @@ class MapContainer extends Component {
             <Container fluid>
                 <div style={styleMain}>Map</div>
                 <Row>
-                    <Col>
-                    
-                        <div align="center">
-                            <Row>
-                                <Col>
-                                    <br></br>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col lg={2} md={2} sm={1}></Col>
-                                <Col>
+                                <Col lg={1} md={1} sm={1}></Col>
+                                <Col lg={7} md={5} sm={4}>
                                     <Map
                                         google={this.props.google}
                                         style={mapStyles}
@@ -163,7 +173,14 @@ class MapContainer extends Component {
                                                 lng: this.state.user_lon
                                             }}
                                         zoom={12}
-                                        hoverDistance={100}>
+                                        hoverDistance={1000}
+                                        zoomControl={true}
+                                        mapTypeControl={true}
+                                        scaleControl={true}
+                                        streetViewControl={true}
+                                        panControl={true}
+                                        rotateControl={true}
+                                        fullscreenControl={true}>
 
                                         {/* Add a marker on the map for each spot */}
                                         {
@@ -181,34 +198,31 @@ class MapContainer extends Component {
                                             <InfoWindow position={this.state.activeMarker.location} onClose={() => {this.onInfoWindowClose()}} visible={this.state.showingInfoWindow}>
                                                 <div>
                                                     <div>
-                                                         {this.state.activeMarker.name}  
+                                                        <div style={styleInfoWindowHeader}>
+                                                            {this.state.activeMarker.name}
+                                                        </div>  <br/><br/>
+                                                        <div style={styleInfoWindowbody}>
+                                                         Address: {this.state.activeMarker.address}<br/>
+                                                         Details: {this.state.activeMarker.details}<br/>
+                                                         Rating: {this.state.activeMarker.rating}<br/>
+                                                         Security: {this.state.activeMarker.security}<br/>
+                                                         Obstacles: {this.state.activeMarker.osbtacles}<br/>
+                                                         Challenges: {this.state.activeMarker.challenges}<br/>
+                                                         </div>
                                                     </div>
 
                                                 </div>
                                             </InfoWindow>
                                         }
                                         
-
                                     </Map>
                                     
-
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    {/* find a better way to do this or put something here */}
-                                
-                                    <br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+
+                                <Col lg={4} md={4} sm={3}>
+                                <div style={styleFilter}>Filters</div>
                                 </Col>
-                            </Row>
-                        </div>
-
-                    </Col>
-                    <Col>
-                    <div style={styleMain}>Filters</div>
-                    {}
-                    </Col>
-
+                
                 </Row>
             </Container>
         );
