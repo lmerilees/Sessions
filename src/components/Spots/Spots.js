@@ -49,7 +49,7 @@ class Spots extends Component {
         this.handleClick = this.handleClick.bind(this);
       }  
 
-      getUserRep = event => {
+      getUserRep = () => {
         let user_id = this.state.sessionUser;
           fetch('http://localhost:3001/getProfile', {
               method: 'POST',
@@ -81,7 +81,6 @@ class Spots extends Component {
       updateRep = () => {
 
         let user_name = this.state.sessionUser;
-        console.log(this.state.userRep);
         let reputation = this.state.userRep + 1
       
         fetch('http://localhost:3001/updateRep', {
@@ -103,6 +102,8 @@ class Spots extends Component {
           this.setState({
             userRep: data.rows[0].reputation
           })
+          
+          // this needs to be called to update the rep displayed on the header
           this.props.handler();
 
         }).catch(err => {
@@ -110,7 +111,7 @@ class Spots extends Component {
         });
     }
 
-        getSpots() {
+        getSpots= () => {
             fetch('http://localhost:3001/getSpots', {
                 method: 'GET',
                 headers: {
@@ -142,7 +143,7 @@ class Spots extends Component {
             });
           }
 
-        createSpot = event => {
+        createSpot = () => {
             let spot_name = this.state.createParams.spot_name;
             let location = this.state.createParams.location;
             let image = this.state.createParams.image;
@@ -202,13 +203,12 @@ class Spots extends Component {
       }
     
     // load spots when component is rendered for the first time
-    componentDidMount() {
+    componentDidMount = () => {
         this.getSpots();
         this.getUserRep();
     }
       
 render() {
-  const { match, userReps } = this.props;
     return(
           <Container fluid>
               <Row>

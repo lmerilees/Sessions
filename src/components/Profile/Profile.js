@@ -106,7 +106,6 @@ class Profile extends Component {
             if(this.state.setupModal == true){
               this.toggle2();
             }
-            
 
             let image = this.state.createParams.image;
             let reputation = this.state.createParams.repuation;
@@ -121,6 +120,7 @@ class Profile extends Component {
             let favourite_clip = this.state.createParams.favourite_clip;
             let badges = this.state.createParams.badges;
             let user_name = this.state.sessionUser;
+
             fetch('http://localhost:3001/modifyProfile', {
                 method: 'POST',
                 headers: {
@@ -152,20 +152,20 @@ class Profile extends Component {
             });
           };
 
-        toggle() {
+        toggle =() => {
           this.setState({
             infoModal: !this.state.infoModal
           });
         };
 
-        toggle2() {
+        toggle2 = () => {
           this.setState({
             setupModal: !this.state.setupModal
           });
         };
     
     // load spots when component is rendered for the first time
-    componentDidMount() {
+    componentDidMount = () => {
         this.getUserInfo();
     }
       

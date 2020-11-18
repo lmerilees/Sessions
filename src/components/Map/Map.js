@@ -1,6 +1,6 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
 import {React, Component } from 'react';
-import { Google, Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react'
+import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react'
 
 const mapStyles = {
     width: '800px',
@@ -57,21 +57,20 @@ class MapContainer extends Component {
     /**
      * Get geolocation of user and store latitude and longitude in states
      */
-    getLocation() {
+    getLocation = () => {
         navigator.geolocation.getCurrentPosition((position) => {
             this.setState({user_lat: position.coords.latitude, user_lon: position.coords.longitude});
         }, (error) => this.setState({errorMessage: error}))
     }
 
     // convert address to coordinates so that can be marked on the map
-    getCoordinates(spot) {
+    getCoordinates = (spot) => {
 
         // access words of address string 
         let str = spot.location.split(' ');
         let streetNum = str[0];
         let streetName = str[1]
         let streetType = str[2];
-
         let sql = "https://maps.googleapis.com/maps/api/geocode/json?address=" + streetNum + "+"+ streetName + "+" + streetType + ",+" + "Saskatoon,+SK&key=AIzaSyDRkknHDMFkSTIXzpRnySLykWf659-wzio"
         fetch(sql)
         .then(async response => {
@@ -107,8 +106,7 @@ class MapContainer extends Component {
     }
 
     // get spots from the 
-    getSpots() {
-        console.log("getspots");
+    getSpots = () =>{
         fetch('http://localhost:3001/getSpots', {
             method: 'GET',
             headers: {
@@ -151,8 +149,6 @@ class MapContainer extends Component {
         });
     }
 
-    
-
     componentDidMount() {
         this.getLocation();
         this.getSpots();
@@ -163,66 +159,59 @@ class MapContainer extends Component {
             <Container fluid>
                 <div style={styleMain}>Map</div>
                 <Row>
-                                <Col lg={1} md={1} sm={1}></Col>
-                                <Col lg={7} md={5} sm={4}>
-                                    <Map
-                                        google={this.props.google}
-                                        style={mapStyles}
-                                        initialCenter={{
-                                                lat: this.state.user_lat,
-                                                lng: this.state.user_lon
-                                            }}
-                                        zoom={12}
-                                        hoverDistance={1000}
-                                        zoomControl={true}
-                                        mapTypeControl={true}
-                                        scaleControl={true}
-                                        streetViewControl={true}
-                                        panControl={true}
-                                        rotateControl={true}
-                                        fullscreenControl={true}>
+                    <Col lg={1} md={1} sm={1}></Col>
+                    <Col lg={7} md={5} sm={4}>
+                        <Map
+                            google={this.props.google}
+                            style={mapStyles}
+                            initialCenter={{
+                                lat: this.state.user_lat,
+                                lng: this.state.user_lon
+                            }}
+                            zoom={12}
+                            hoverDistance={1000}
+                            zoomControl={true}
+                            mapTypeControl={true}
+                            scaleControl={true}
+                            streetViewControl={true}
+                            panControl={true}
+                            rotateControl={true}
+                            fullscreenControl={true}>
 
-                                        {/* Add a marker on the map for each spot */}
-                                        {
-                                            this.state.mapList.map((spot, index) => {
-                                                return (
-                                                    <Marker title={spot.name} name={spot.name} key={index} center={spot.location} position={spot.location} clickable={true} onClick={() => {this.handleClick(spot)}} />
-                                                )
-                                            })
-                                        }
+                            {/* Add a marker on the map for each spot */}
+                               {
+                                this.state.mapList.map((spot, index) => {
+                                    return (
+                                        <Marker title={spot.name} name={spot.name} key={index} center={spot.location} position={spot.location} clickable={true} onClick={() => {this.handleClick(spot)}} />
+                                        )
+                                    })
+                               }
 
-
-
-                                        {/* Add info window for when user clicks on a marker */}
-                                        {
-                                            <InfoWindow position={this.state.activeMarker.location} onClose={() => {this.onInfoWindowClose()}} visible={this.state.showingInfoWindow}>
-                                                <div>
-                                                    <div>
-                                                        <div style={styleInfoWindowHeader}>
-                                                            {this.state.activeMarker.name}
-                                                        </div>  <br/><br/>
-                                                        <div style={styleInfoWindowbody}>
-                                                         Address: {this.state.activeMarker.address}<br/>
-                                                         Details: {this.state.activeMarker.details}<br/>
-                                                         Rating: {this.state.activeMarker.rating}<br/>
-                                                         Security: {this.state.activeMarker.security}<br/>
-                                                         Obstacles: {this.state.activeMarker.obstacles}<br/>
-                                                         Challenges: {this.state.activeMarker.challenges}<br/>
-                                                         </div>
-                                                    </div>
-
-                                                </div>
-                                            </InfoWindow>
-                                        }
-                                        
-                                    </Map>
-                                    
-                                </Col>
-
-                                <Col lg={4} md={4} sm={3}>
-                                <div style={styleFilter}>Filters</div>
-                                </Col>
-                
+                            {/* Add info window for when user clicks on a marker */}
+                            {
+                            <InfoWindow position={this.state.activeMarker.location} onClose={() => {this.onInfoWindowClose()}} visible={this.state.showingInfoWindow}>
+                                <div>
+                                    <div>
+                                        <div style={styleInfoWindowHeader}>
+                                            {this.state.activeMarker.name}
+                                        </div>  <br/><br/>
+                                        <div style={styleInfoWindowbody}>
+                                            Address: {this.state.activeMarker.address}<br/>
+                                            Details: {this.state.activeMarker.details}<br/>
+                                            Rating: {this.state.activeMarker.rating}<br/>
+                                            Security: {this.state.activeMarker.security}<br/>
+                                            Obstacles: {this.state.activeMarker.obstacles}<br/>
+                                            Challenges: {this.state.activeMarker.challenges}<br/>
+                                        </div>
+                                    </div>
+                                 </div>
+                            </InfoWindow>
+                            }          
+                        </Map>
+                    </Col>
+                    <Col lg={4} md={4} sm={3}>
+                        <div style={styleFilter}>Filters</div>
+                    </Col>
                 </Row>
             </Container>
         );

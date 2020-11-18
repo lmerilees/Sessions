@@ -57,7 +57,7 @@ class Dashboard extends Component {
     });
   };
 
-  getUserRep = event => {
+  getUserRep = () => {
     let user_id = this.state.sessionUser;
       fetch('http://localhost:3001/getProfile', {
           method: 'POST',
@@ -86,11 +86,11 @@ class Dashboard extends Component {
       });
     }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.getUserRep();
   }
 
-  handler() {
+  handler = () => {
     this.getUserRep();
   }
 
