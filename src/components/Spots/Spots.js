@@ -1,4 +1,4 @@
-import { Container, Row, Col, Button, ListGroup, Alert, ToggleButton, ToggleButtonGroup, ButtonGroup, InputGroup, FormControl } from "react-bootstrap";
+import { Container, Row, Col, Button, ListGroup, Alert, ToggleButton, ToggleButtonGroup, ButtonGroup, InputGroup, FormControl, Form, Modal } from "react-bootstrap";
 import { React, Component} from 'react';
 import { Route, Switch } from 'react-router'
 
@@ -20,6 +20,11 @@ const styleList = {
   overflowY: 'scroll',
 }
 
+const styleMain = {
+  fontFamily: 'consolas',
+  fontSize: '15px',
+}
+
 class Spots extends Component {
     constructor(props) {
         super(props);
@@ -28,6 +33,8 @@ class Spots extends Component {
             spotList: [],
             key: 0,
             userRep: this.props.rep,
+            infoModal: false,
+            selectedSpot: {},
             createParams: {
                 spot_name: "",
                 location: "",
@@ -39,10 +46,10 @@ class Spots extends Component {
                 challenges: "",
               }
         };
+        this.handleClick = this.handleClick.bind(this);
       }  
 
       getUserRep = event => {
-        console.log(this.state.userRep);
         let user_id = this.state.sessionUser;
           fetch('http://localhost:3001/getProfile', {
               method: 'POST',
@@ -121,7 +128,7 @@ class Spots extends Component {
             let spotArray = []
             for(let i = 0; i < data.rowCount; i++){
                 //console.log(data.rows[i].spot_name);
-                spotArray.push(data.rows[i].spot_name);
+                spotArray.push(data.rows[i]);
             }
 
             // update our spot state using the array
@@ -183,6 +190,16 @@ class Spots extends Component {
               createParams: createParamsNew
             });
           };
+
+
+    handleClick = (spot) => {
+      console.log(spot);
+      this.setState({
+        infoModal: !this.state.infoModal,
+        selectedSpot: spot
+      });
+      
+      }
     
     // load spots when component is rendered for the first time
     componentDidMount() {
@@ -203,13 +220,41 @@ render() {
                       <div className="styleMain">Spot List</div>
                       <ListGroup style={styleList}>
                           {this.state.spotList.map((spot, key) => (      
-                              <ListGroup.Item eventKey={this.state.key} action href={`${this.props.path}/spots/${(String(spot).split(" ").join(""))}`}>{spot}</ListGroup.Item>
+                              <ListGroup.Item eventKey={key} action onClick={() => {this.setState({selectedSpot: spot})}}>{spot.spot_name}</ListGroup.Item>
                           ))}
                       </ListGroup>
+
+                      <div id="InfoModal">
+
+                        <Modal show={this.state.infoModal}>
+                          <Modal.Header>
+                            <Modal.Title >{this.state.selectedSpot.spot_name}</Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>
+
+                            <Row style={styleMain}>
+                            
+                              <Col lg={8} md={4} sm={2}>
+                                <b>Address:</b> {this.state.selectedSpot.location} <br/>
+                                <b>Details:</b> {this.state.selectedSpot.details} <br/>
+                                <b>Obstacles:</b> {this.state.selectedSpot.obstacles} <br/>
+                                <b>Security Level:</b> {this.state.selectedSpot.security} <br/>
+                              </Col>
+                                
+                              <Col lg={4} md={2} sm={1}>
+                                Image goes here
+                              </Col>
+                            
+                            </Row>
+
+                          </Modal.Body>
+                          <Modal.Footer><Button onClick={() => this.handleClick(this.state.selectedSpot)}>Close</Button></Modal.Footer>
+                        </Modal>
+                      </div>
       
                       {/* Checkboxes for spot filter */}
                       <Row>
-                          <Button variant="light" size="sm" onClick={this.getSpots}>Select</Button>
+                          <Button variant="light" size="sm" onClick={() => this.handleClick(this.state.selectedSpot)}>Select</Button>
                           <ToggleButtonGroup type="checkbox" values="1" aria-label="Spot filters">
                               <ToggleButton type="checkbox" checked="true" value="1">Ledges</ToggleButton>
                               <ToggleButton type="checkbox" checked="true" value="1">Rails</ToggleButton>
@@ -235,6 +280,7 @@ render() {
                             <input type='text' name='location' placeholder="Location" onChange={this.handleFormChange}/>
                             <input type='text' name='obstacles' placeholder="Obstacles" onChange={this.handleFormChange}/>
                             <input type='text' name='security' placeholder="Security" onChange={this.handleFormChange}/>
+                            <input type='text' name='details' placeholder="Details" onChange={this.handleFormChange}/>
                             <Button onClick={this.createSpot}>Add Spot</Button>
                         </form>                    
                     </div>
@@ -244,20 +290,6 @@ render() {
                   <Col lg={1} md={1} sm={1}>
                   </Col>
               </Row>
- 
-              {/* This needs to route each added spot to its own page blah */}
-              <main role="main"> 
-                <div className="main">
-                  <Switch>
-                  {this.state.spotList.map((spot) => (
-                    <Route path={`undefined/spots/${(String(spot).split(" ").join(""))}`}>
-                      {console.log("route")}
-                    </Route>
-                  ))}
-                  </Switch>
-                </div>
-              </main>
-
 
           </Container>
       );

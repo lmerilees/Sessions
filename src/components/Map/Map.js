@@ -206,7 +206,7 @@ class MapContainer extends Component {
                                                          Details: {this.state.activeMarker.details}<br/>
                                                          Rating: {this.state.activeMarker.rating}<br/>
                                                          Security: {this.state.activeMarker.security}<br/>
-                                                         Obstacles: {this.state.activeMarker.osbtacles}<br/>
+                                                         Obstacles: {this.state.activeMarker.obstacles}<br/>
                                                          Challenges: {this.state.activeMarker.challenges}<br/>
                                                          </div>
                                                     </div>

@@ -92,7 +92,6 @@ class Dashboard extends Component {
 
   handler() {
     this.getUserRep();
-    console.log("handler");
   }
 
   render() {
