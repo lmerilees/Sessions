@@ -48,7 +48,7 @@ const getUsers = (body) => {
 
   const getSpots = () => {
     return new Promise(function(resolve, reject) {
-      pool.query('SELECT * FROM spots', (error, results) => {
+      pool.query('SELECT * FROM spots ORDER BY spot_name', (error, results) => {
         if (error) {
           reject(error)
         }
@@ -60,7 +60,7 @@ const getUsers = (body) => {
   const createSpot = (body) => {
     return new Promise(function(resolve, reject) { 
       const { spot_name, location, image, details, rating, security, obstacles, challenges } = body
-      pool.query('INSERT INTO spots (spot_name, location, image, details, rating, security, obstacles, challenges) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [spot_name, location, image, details, rating, security, obstacles, challenges], (error, results) => {
+      pool.query('INSERT INTO spots (spot_name, location, image, details, security, obstacles, challenges) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [spot_name, location, image, details, rating, security, obstacles, challenges], (error, results) => {
         if (error) {
           reject(error)
         }
@@ -96,6 +96,20 @@ const getUsers = (body) => {
       })
     })
   }
+
+  const updateRating = (body) => {
+    return new Promise(function(resolve, reject) { 
+      const { rating, spot_name } = body
+      pool.query('UPDATE spots SET rating = $1 WHERE spot_name = $2 RETURNING *', [rating, spot_name], (error, results) => {
+        if (error) {
+          //console.log(error);
+          reject(error)
+        }
+        //console.log(results);
+        resolve(results)
+      })
+    })
+  }
   
   module.exports = {
     getUsers,
@@ -104,5 +118,6 @@ const getUsers = (body) => {
     createSpot,
     getProfile,
     modifyProfile,
-    updateRep
+    updateRep,
+    updateRating
   }

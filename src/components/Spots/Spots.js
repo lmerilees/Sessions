@@ -31,16 +31,16 @@ class Spots extends Component {
         this.state = {
             sessionUser: localStorage.getItem('user'),
             spotList: [],
-            key: 0,
+            key: null,
             userRep: this.props.rep,
             infoModal: false,
             selectedSpot: {},
+            buttonDisabled: false,
             createParams: {
                 spot_name: "",
                 location: "",
                 image: "",
                 details: "",
-                rating: 0,
                 obstacles: "",
                 security: "",
                 challenges: "",
@@ -143,69 +143,133 @@ class Spots extends Component {
             });
           }
 
-        createSpot = () => {
-            let spot_name = this.state.createParams.spot_name;
-            let location = this.state.createParams.location;
-            let image = this.state.createParams.image;
-            let details = this.state.createParams.details;
-            let rating = this.state.createParams.rating;
-            let obstacles = this.state.createParams.obstacles;
-            let security = this.state.createParams.security;
-            let challenges = this.state.createParams.challenges;
-            fetch('http://localhost:3001/createSpot', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({spot_name, location, image, details, rating, obstacles, security, challenges})
-              })
-            .then(async response => {
-              const data = await response.json();
-              if (!response.ok) { // get error message or default reponse
-                const err = (data && data.message) || response.status;
-                return Promise.reject(err);
-            }
+      createSpot = () => {
 
-            // repopulate the spotlist to reflect addition
-            this.getSpots();
+      let spot_name = this.state.createParams.spot_name;
+      let location = this.state.createParams.location;
+      let image = this.state.createParams.image;
+      let details = this.state.createParams.details;
+      let obstacles = this.state.createParams.obstacles;
+      let security = this.state.createParams.security;
+      let challenges = this.state.createParams.challenges;
+      fetch('http://localhost:3001/createSpot', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({spot_name, location, image, details, obstacles, security, challenges})
+        })
+      .then(async response => {
+        const data = await response.json();
+        if (!response.ok) { // get error message or default reponse
+          const err = (data && data.message) || response.status;
+          return Promise.reject(err);
+      }
 
-            // increate reputation for adding a new spot
-            this.updateRep();
+      // repopulate the spotlist to reflect addition
+      this.getSpots();
+ 
+      // increate reputation for adding a new spot
+      this.updateRep();
 
-            // let user know they added a new spot successfully
-            alert(this.state.createParams.spot_name + " has been added!");
+      // let user know they added a new spot successfully
+      alert(this.state.createParams.spot_name + " has been added!");
 
-            // clear create forms 
-            document.getElementById("form-create").reset();
+      // clear create forms 
+      document.getElementById("form-create").reset();
 
-            }).catch(err => {
-              console.error("an error occured", err);
-            });
-        }
+      }).catch(err => {
+        console.error("an error occured", err);
+      });
+    }
 
-        handleFormChange = event => {
-            let createParamsNew = { ...this.state.createParams };
-            let val = event.target.value;
-            createParamsNew[event.target.name] = val;
-            this.setState({
-              createParams: createParamsNew
-            });
-          };
+
+    updateRating = (spotRating) => {
+      let spot_name = this.state.selectedSpot.spot_name;
+      let rating = this.state.selectedSpot.rating + spotRating;
+      console.log(rating);
+      fetch('http://localhost:3001/updateRating', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          }, 
+          body: JSON.stringify({rating, spot_name})
+        })
+      .then(async response => {
+        const data = await response.json();
+        if (!response.ok) { // get error message or default reponse
+          const err = (data && data.message) || response.status;
+          return Promise.reject(err);
+      }
+
+      // find a better way to update rating in Modal without resetting every state
+      this.setState({
+        selectedSpot: {
+          spot_name: this.state.selectedSpot.spot_name,
+          details: this.state.selectedSpot.details,
+          image: this.state.selectedSpot.image,
+          location: this.state.selectedSpot.location,
+          obstacles: this.state.selectedSpot.obstacles,
+          security: this.state.selectedSpot.security,
+          rating: this.state.selectedSpot.rating + spotRating,
+          challenges: this.state.selectedSpot.challenges,
+        } 
+      })
+      //console.log(data);
+      this.getSpots();
+      // let user know they added a new spot successfully
+      <Alert>Thanks for letting us know!</Alert>
+
+      }).catch(err => {
+        console.error("an error occured", err);
+      });
+    }
+
+
+
+    handleFormChange = event => {
+      let createParamsNew = { ...this.state.createParams };
+      let val = event.target.value;
+      createParamsNew[event.target.name] = val;
+      this.setState({
+        createParams: createParamsNew
+      });
+    };
 
 
     handleClick = (spot) => {
       console.log(spot);
       this.setState({
         infoModal: !this.state.infoModal,
-        selectedSpot: spot
+        selectedSpot: spot,
+        buttonDisabled: false,
       });
-      
       }
+    
+    handleClickLike = () => {
+      console.log("Spot liked!");
+      this.setState({  
+        buttonDisabled: true
+      })
+      this.updateRating(1);
+    }
+
+    handleClickDislike = () => {
+      console.log("Spot disliked!");
+      this.setState({  
+        buttonDisabled: true
+      })
+      this.updateRating(-1)
+    }
     
     // load spots when component is rendered for the first time
     componentDidMount = () => {
         this.getSpots();
         this.getUserRep();
+    }
+
+    componentDidUpdate = () => {
+      this.getSpots();
     }
       
 render() {
@@ -239,6 +303,14 @@ render() {
                                 <b>Details:</b> {this.state.selectedSpot.details} <br/>
                                 <b>Obstacles:</b> {this.state.selectedSpot.obstacles} <br/>
                                 <b>Security Level:</b> {this.state.selectedSpot.security} <br/>
+                                <b>Rating:</b> {this.state.selectedSpot.rating} <br/>
+                                <br/>
+                                <br/>
+
+                                 <b>Had a session here? Rate it!</b>
+                                <Row lg={4}>
+                                  <Col><Button variant="outline-success" onClick={() => this.handleClickLike()} disabled={this.state.buttonDisabled}>Like</Button></Col><Col><Button variant="outline-danger" onClick={() => this.handleClickDislike()} disabled={this.state.buttonDisabled}>Dislike</Button></Col></Row>
+                               
                               </Col>
                                 
                               <Col lg={4} md={2} sm={1}>
@@ -248,13 +320,13 @@ render() {
                             </Row>
 
                           </Modal.Body>
-                          <Modal.Footer><Button onClick={() => this.handleClick(this.state.selectedSpot)}>Close</Button></Modal.Footer>
+                          <Modal.Footer><Button variant="outline-primary" onClick={() => this.handleClick(this.state.selectedSpot)}>Close</Button></Modal.Footer>
                         </Modal>
                       </div>
       
                       {/* Checkboxes for spot filter */}
                       <Row>
-                          <Button variant="light" size="sm" onClick={() => this.handleClick(this.state.selectedSpot)}>Select</Button>
+                          <Button variant="primary" onClick={() => this.handleClick(this.state.selectedSpot)}>Select</Button>
                           <ToggleButtonGroup type="checkbox" values="1" aria-label="Spot filters">
                               <ToggleButton type="checkbox" checked="true" value="1">Ledges</ToggleButton>
                               <ToggleButton type="checkbox" checked="true" value="1">Rails</ToggleButton>
