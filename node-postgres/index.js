@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const port = 3001
 const sessions_model = require('./sessions_model')
+const fileUpload = require('express-fileupload')
+const cors = require('cors')
 
 app.use(express.json())
 
@@ -56,6 +58,17 @@ app.get('/getSpots', (req, res) => {
   })
 })
 
+app.get('/getPosts', (req, res) => {
+  sessions_model.getPosts()
+  .then(response => {
+      res.status(200).send(response);
+  })
+  .catch(error => {
+    console.log(error);
+      res.status(500).send(error);
+  })
+})
+
 app.post('/createSpot', (req, res) => {
   sessions_model.createSpot(req.body)
   .then(response => {
@@ -63,6 +76,17 @@ app.post('/createSpot', (req, res) => {
   })
   .catch(error => {
     //console.log(error);
+    res.status(500).send(error);
+  })
+})
+
+app.post('/createPost', (req, res) => {
+  sessions_model.createPost(req.body)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    console.log(error);
     res.status(500).send(error);
   })
 })

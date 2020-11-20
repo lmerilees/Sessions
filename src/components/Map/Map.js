@@ -1,4 +1,4 @@
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Image, Table } from "react-bootstrap";
 import {React, Component } from 'react';
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react'
 
@@ -192,17 +192,68 @@ class MapContainer extends Component {
                             <InfoWindow position={this.state.activeMarker.location} onClose={() => {this.onInfoWindowClose()}} visible={this.state.showingInfoWindow}>
                                 <div>
                                     <div>
+                                        <Col lg={8} md={8} sm={4}>
                                         <div style={styleInfoWindowHeader}>
                                             {this.state.activeMarker.name}
                                         </div>  <br/><br/>
                                         <div style={styleInfoWindowbody}>
-                                            Address: {this.state.activeMarker.address}<br/>
-                                            Details: {this.state.activeMarker.details}<br/>
-                                            Rating: {this.state.activeMarker.rating}<br/>
-                                            Security: {this.state.activeMarker.security}<br/>
-                                            Obstacles: {this.state.activeMarker.obstacles}<br/>
-                                            Challenges: {this.state.activeMarker.challenges}<br/>
+                                            <Table size="lg" striped={false} bordered={true}>
+                                                <tr>
+                                                    <td>
+                                                        Address:
+                                                    </td>
+                                                    <td>
+                                                        {this.state.activeMarker.address}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Details:
+                                                    </td>
+                                                    <td>
+                                                        {this.state.activeMarker.details}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Rating:
+                                                    </td>
+                                                    <td>
+                                                        {this.state.activeMarker.rating}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Security:
+                                                    </td>
+                                                    <td>
+                                                        {this.state.activeMarker.security}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Obstacles:
+                                                    </td>
+                                                    <td>
+                                                        {this.state.activeMarker.obstacles}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Challenges:
+                                                    </td>
+                                                    <td>
+                                                        {this.state.activeMarker.challenges}
+                                                    </td>
+                                                </tr>
+                                            </Table>
                                         </div>
+                                        </Col>
+                                        <Col lg={2} md={2} sm={1}>
+                                            <Image src="http://www.cityspaces.ca/wp-content/uploads/2013/09/screen-shot-2013-05-11-at-3-30-31-pm-680x487.png" fluid rounded thumbnail/>  
+                                        </Col>
+
+                                        
                                     </div>
                                  </div>
                             </InfoWindow>

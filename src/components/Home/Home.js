@@ -1,4 +1,4 @@
-import { Container, Row, Col, Button, ListGroup, Alert, ToggleButton, ToggleButtonGroup, ButtonGroup, InputGroup, FormControl } from "react-bootstrap";
+import { Container, Row, Col, Button, ListGroup, Alert, ToggleButton, ToggleButtonGroup, ButtonGroup, InputGroup, FormControl, Card } from "react-bootstrap";
 import { React, Component} from 'react';
 import { Route, Switch } from 'react-router'
 
@@ -11,23 +11,27 @@ const ListGroupStyle = {
   overflowY: 'scroll',
 }
 
+const styleList = {
+  maxHeight: '90vh',
+  maxWidth: '40vw',
+  overflowY: 'scroll',
+}
+
+const cardBodyStyle = {
+  color: "black",
+  fontSize: "10px",
+  textAlign: 'left'
+}
+
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
             spotList: [],
-            key: 0,
+            postList: [],
             createParams: {
-                spot_name: "",
-                location: "",
-                image: "",
-                details: "",
-                rating: 0,
-                obstacles: "",
-                security: "",
-                challenges: "",
-              }
+          }
         };
       }  
 
@@ -45,19 +49,46 @@ class Home extends Component {
                 return Promise.reject(err);
             }
 
+            let spotArray = [];
             // add spot names to our array
-            let spotArray = []
             for(let i = 0; i < data.rowCount; i++){
-                //console.log(data.rows[i].spot_name);
-                spotArray.push(data.rows[i].spot_name);
+                spotArray.push(data.rows[i]);
             }
 
-            // update our spot state using the array
             this.setState({
                 spotList: spotArray
             })
             
-            //this.setState.spotList.push(data);
+            }).catch(err => {
+              console.error("an error occured", err);
+            });
+          }
+
+          getPosts() {
+            fetch('http://localhost:3001/getPosts', {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              })
+            .then(async response => {
+              const data = await response.json();
+              if (!response.ok) { // get error message or default reponse
+                const err = (data && data.message) || response.status;
+                return Promise.reject(err);
+            }
+
+            let postArray = [];
+
+            // add posts to our array
+            for(let i = 0; i < data.rowCount; i++){
+                postArray.push(data.rows[i]);
+            }
+            
+            this.setState({
+              postList: postArray
+            })
+            
             }).catch(err => {
               console.error("an error occured", err);
             });
@@ -76,7 +107,9 @@ class Home extends Component {
     // load spots when component is rendered for the first time
     componentDidMount() {
         this.getSpots();
+        this.getPosts();
     }
+
       
 render() {
   const { match } = this.props;
@@ -87,32 +120,41 @@ render() {
                 <Col lg={1} md={1} sm={1}>
                 </Col>
 
-                <Col>
+                <Col lg={6} md={4} sm={2}>
                         <div className="styleMain">
                             News Feed
                         </div>
-                        <ListGroup style={ListGroupStyle}>
-                          {this.state.spotList.map((spot, key) => (      
-                              <ListGroup.Item eventKey={this.state.key} action href={`${this.props.path}/spots/${(String(spot).split(" ").join(""))}`}>{spot}</ListGroup.Item>
+                          {/* Post list */}
+                          <ListGroup style={ListGroupStyle}>
+                          {this.state.postList.map((post, key) => (      
+                              <ListGroup.Item eventKey={key} >
+                                <Card bg='light'>
+                                  <Card.Title>{post.post_name}</Card.Title>
+                                  <Card.Body>
+                                    <Card.Text style={cardBodyStyle}>
+                                      {post.post_body}
+                                      
+                                    </Card.Text>
+                                   
+                                  </Card.Body>
+                                </Card>
+                              </ListGroup.Item>
                           ))}
                         </ListGroup>
-                        
                 </Col>
-
-                    <Col lg={2} md={1} sm={1}>
-                    </Col>
-                        
-                  <Col>
+                       
+                  <Col lg={4} md={2} sm={2}>
 
                     
                         <div className="styleMain">
                             Recently Added Spots
                         </div>
-                        <ListGroup style={ListGroupStyle}>
+                        <ListGroup style={styleList}>
                           {this.state.spotList.map((spot, key) => (      
-                              <ListGroup.Item eventKey={this.state.key} action href={`${this.props.path}/spots/${(String(spot).split(" ").join(""))}`}>{spot}</ListGroup.Item>
+                              <ListGroup.Item eventKey={key}>{spot.spot_name}</ListGroup.Item>
                           ))}
-                        </ListGroup>
+                       </ListGroup>
+                        
       
                         <div className="styleMain">
                             Current Groups
@@ -120,9 +162,6 @@ render() {
 
                   </Col>
 
-
-                  <Col lg={1} md={1} sm={1}>
-                  </Col>
 
               </Row>
 

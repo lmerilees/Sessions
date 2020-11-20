@@ -21,3 +21,10 @@
     max-height: 10px;
     overflow-y: scroll;
 }
+
+.styleModal {
+    width: 75vw;
+    max-width: 75vw;
+    height: 90vh;
+    max-height: 90vh;
+}

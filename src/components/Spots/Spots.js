@@ -1,9 +1,9 @@
-import { Container, Row, Col, Button, ListGroup, Alert, ToggleButton, ToggleButtonGroup, ButtonGroup, InputGroup, FormControl, Form, Modal } from "react-bootstrap";
+import { Container, Row, Col, Button, ListGroup, Alert, ToggleButton, ToggleButtonGroup, ButtonGroup, InputGroup, FormControl, Form, FormGroup, Modal, Image, Table} from "react-bootstrap";
 import { React, Component} from 'react';
-import { Route, Switch } from 'react-router'
+import { Route, Switch } from 'react-router';
+import * as Dropzone from 'react-dropzone';
 
 import "./Spots.css";
-
 
 const styleCol = {
     color: 'white',
@@ -23,6 +23,17 @@ const styleList = {
 const styleMain = {
   fontFamily: 'consolas',
   fontSize: '15px',
+}
+
+const styleHeader = {
+  fontFamily: 'consolas',
+  fontSize: '40px'
+}
+
+const styleTag = {
+  fontSize: '20px',
+  fontWeight: 'bold',
+  textAlign: 'center'
 }
 
 class Spots extends Component {
@@ -128,7 +139,6 @@ class Spots extends Component {
             // add spot names to our array
             let spotArray = []
             for(let i = 0; i < data.rowCount; i++){
-                //console.log(data.rows[i].spot_name);
                 spotArray.push(data.rows[i]);
             }
 
@@ -137,7 +147,6 @@ class Spots extends Component {
                 spotList: spotArray
             })
             
-            //this.setState.spotList.push(data);
             }).catch(err => {
               console.error("an error occured", err);
             });
@@ -187,7 +196,6 @@ class Spots extends Component {
     updateRating = (spotRating) => {
       let spot_name = this.state.selectedSpot.spot_name;
       let rating = this.state.selectedSpot.rating + spotRating;
-      console.log(rating);
       fetch('http://localhost:3001/updateRating', {
           method: 'POST',
           headers: {
@@ -215,7 +223,7 @@ class Spots extends Component {
           challenges: this.state.selectedSpot.challenges,
         } 
       })
-      //console.log(data);
+ 
       this.getSpots();
       // let user know they added a new spot successfully
       <Alert>Thanks for letting us know!</Alert>
@@ -225,7 +233,10 @@ class Spots extends Component {
       });
     }
 
-
+    handleFileUpload = (file) => {
+      console.log("fileUpload()");
+      //console.log(file);
+    }
 
     handleFormChange = event => {
       let createParamsNew = { ...this.state.createParams };
@@ -238,7 +249,6 @@ class Spots extends Component {
 
 
     handleClick = (spot) => {
-      console.log(spot);
       this.setState({
         infoModal: !this.state.infoModal,
         selectedSpot: spot,
@@ -247,7 +257,6 @@ class Spots extends Component {
       }
     
     handleClickLike = () => {
-      console.log("Spot liked!");
       this.setState({  
         buttonDisabled: true
       })
@@ -255,7 +264,6 @@ class Spots extends Component {
     }
 
     handleClickDislike = () => {
-      console.log("Spot disliked!");
       this.setState({  
         buttonDisabled: true
       })
@@ -290,31 +298,71 @@ render() {
 
                       <div id="InfoModal">
 
-                        <Modal show={this.state.infoModal}>
+                        <Modal dialogClassName="styleModal" show={this.state.infoModal}>
                           <Modal.Header>
-                            <Modal.Title >{this.state.selectedSpot.spot_name}</Modal.Title>
+                            <Modal.Title style={styleHeader}>{this.state.selectedSpot.spot_name}</Modal.Title>
                           </Modal.Header>
                           <Modal.Body>
 
                             <Row style={styleMain}>
                             
-                              <Col lg={8} md={4} sm={2}>
-                                <b>Address:</b> {this.state.selectedSpot.location} <br/>
-                                <b>Details:</b> {this.state.selectedSpot.details} <br/>
-                                <b>Obstacles:</b> {this.state.selectedSpot.obstacles} <br/>
-                                <b>Security Level:</b> {this.state.selectedSpot.security} <br/>
-                                <b>Rating:</b> {this.state.selectedSpot.rating} <br/>
+                              <Col lg={6} md={4} sm={2}>
+                                <Table bordered={true} size="lg">
+                                  <tbody>
+                                    <tr>
+                                      <td>
+                                        <b>Address:</b> 
+                                      </td>
+                                      <td>
+                                        {this.state.selectedSpot.location}
+                                      </td>
+                                    </tr> 
+                                    <tr>
+                                      <td>
+                                        <b>Details:</b> 
+                                      </td>
+                                      <td>
+                                        {this.state.selectedSpot.details}
+                                      </td>
+                                    </tr> 
+                                    <tr>
+                                      <td>
+                                        <b>Obstacles:</b> 
+                                      </td>
+                                      <td>
+                                        {this.state.selectedSpot.obstacles}
+                                      </td>
+                                    </tr> 
+                                    <tr>
+                                      <td>
+                                        <b>Security Level:</b> 
+                                      </td>
+                                      <td>
+                                        {this.state.selectedSpot.security}
+                                      </td>
+                                    </tr> 
+                                    <tr>
+                                      <td>
+                                        <b>Rating:</b> 
+                                      </td>
+                                      <td>
+                                        {this.state.selectedSpot.rating}
+                                      </td>
+                                    </tr> 
+                                  </tbody>
+                                  
+                                </Table>
+                                
                                 <br/>
-                                <br/>
-
-                                 <b>Had a session here? Rate it!</b>
+                                 <div style={styleTag}>Had a session here? Rate it!</div>
                                 <Row lg={4}>
                                   <Col><Button variant="outline-success" onClick={() => this.handleClickLike()} disabled={this.state.buttonDisabled}>Like</Button></Col><Col><Button variant="outline-danger" onClick={() => this.handleClickDislike()} disabled={this.state.buttonDisabled}>Dislike</Button></Col></Row>
                                
                               </Col>
                                 
-                              <Col lg={4} md={2} sm={1}>
-                                Image goes here
+                              <Col lg={6} md={2} sm={1}>
+                                <Image src="http://www.cityspaces.ca/wp-content/uploads/2013/09/screen-shot-2013-05-11-at-3-30-31-pm-680x487.png" fluid rounded />
+                                
                               </Col>
                             
                             </Row>

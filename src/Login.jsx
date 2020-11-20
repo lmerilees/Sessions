@@ -35,7 +35,6 @@ class Login extends Component {
      this.setState({
        islogout: true
      });
-    console.log("signup");
   };
 
   handleFormChange = event => {
@@ -109,9 +108,9 @@ class Login extends Component {
             <div className="styleBody">
             <div className="styleMain">Find your perfect skate session.</div>
             <Row>
-              <Col>
+              <Col lg={4} md={2} sm={1}>
               </Col>
-              <Col>
+              <Col lg={4} md={4} sm={1}>
               <form onSubmit={this.login} className="form-signin">
                 <div className="row">
                   <div className="col">
@@ -133,7 +132,7 @@ class Login extends Component {
               </form>
 
               </Col>
-              <Col>
+              <Col lg={4} md={1} sm={1}>
               </Col>
             </Row>
               

@@ -136,11 +136,46 @@ class Profile extends Component {
             }
             // repopulate the spotlist to reflect addition
             this.getUserInfo();
+            this.createPost();
 
             }).catch(err => {
               console.error("an error occured", err);
             });
         }
+
+
+        createPost = () => {
+         
+          console.log("createPost()");
+
+          let board = this.state.createParams.board;
+          let trucks = this.state.createParams.trucks;
+          let wheels = this.state.createParams.wheels;
+          let bearings = this.state.createParams.bearings;
+          let shoes = this.state.createParams.shoes;
+          let user_name = this.state.sessionUser;
+          let post_name = user_name + " change their setup"
+          let post_body = "They're skaing a " + board + " board."
+
+          fetch('http://localhost:3001/createPost', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({post_name, post_body, user_name})
+            })
+          .then(async response => {
+            const data = await response.json();
+            if (!response.ok) { // get error message or default reponse
+              const err = (data && data.message) || response.status;
+              return Promise.reject(err);
+          }
+          console.log(data);
+
+          }).catch(err => {
+            console.error("an error occured", err);
+          });
+      }
 
 
         handleFormChange = event => {
