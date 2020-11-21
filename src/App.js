@@ -1,14 +1,8 @@
 import './App.css';
-//import React from 'react';
-//import Layout from './components/Layout/Layout';
-//import Home from './Home';
-//import Login from './components/Login/Login';
-//import Splash from './components/Splash/Splash';
+
 import Login from "./Login";
 import Signup from "./Signup";
 import React, { Component } from "react";
-//import { Redirect, Switch, Route, Link } from "react-router-dom";
-import { withRouter } from "react-router";
 import "./Dashboard.css";
 import Dashboard from "./Dashboard";
 import {
@@ -19,8 +13,6 @@ import {
 } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 
-//import {BrowserRouter, browserHistory, NavLink, Redirect, Route, Switch} from 'react-router-dom';
-import {Container, Button, Row, Col, Nav, Navbar } from 'react-bootstrap';
 
 function App() {
   return (
