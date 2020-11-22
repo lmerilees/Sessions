@@ -7,7 +7,7 @@ import Profile from "./components/Profile/Profile";
 import Spots from "./components/Spots/Spots.js";
 import Home from "./components/Home/Home.js";
 import Map from "./components/Map/Map";
-import Groups from "./components/Groups/Groups";
+import Leaderboard from "./components/Groups/Leaderboard";
 import {bubble as Menu} from 'react-burger-menu';
 
 
@@ -24,7 +24,7 @@ const styleRep = {
     color: 'white',
     fontSize: '15px',
     fontFamily: 'consolas',
-    float: 'right',
+    alignText: 'center',
     color: 'yellow'
 }
 
@@ -99,18 +99,12 @@ class Dashboard extends Component {
                 {/* first row is our header */}
                 <Row>
                     <Col style={styleHeader}
-                        lg={6}
+                        lg={8}
                         md={6}
                         sm={6}>
                         Sessions
                     </Col>
-                    <Col style={styleRep}
-                        lg={2}
-                        md={1}
-                        sm={1}>
-                        Rep: {
-                        this.state.userRep
-                    } </Col>
+                    
                     <Col lg={2}
                         md={2}
                         sm={2}
@@ -124,6 +118,10 @@ class Dashboard extends Component {
                             {
                             this.state.sessionUser
                         } </Button>
+                        <div style={styleRep}>
+                        Rep: {
+                        this.state.userRep
+                    } </div>
                     </Col>
                     <Col style={styleSignoutBut}
                         lg={2}
@@ -166,8 +164,8 @@ class Dashboard extends Component {
                                 href={
                                     `${
                                         match.path
-                                    }/Groups`
-                            }>Groups</a>
+                                    }/Leaderboard`
+                            }>Leaderboard</a>
                         </Menu>
 
                         <main role="main">
@@ -227,9 +225,9 @@ class Dashboard extends Component {
                                     <Route path={
                                         `${
                                             match.path
-                                        }/groups`
+                                        }/leaderboard`
                                     }>
-                                        <Groups handler={
+                                        <Leaderboard handler={
                                                 this.handler
                                             }
                                             userReps={

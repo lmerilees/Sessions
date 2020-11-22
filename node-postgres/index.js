@@ -126,6 +126,15 @@ app.post('/updateDislikes', (req, res) => {
     })
 })
 
+app.get('/getLeaders', (req, res) => {
+    sessions_model.getLeaders().then(response => {
+        res.status(200).send(response);
+    }).catch(error => {
+        console.log(error);
+        res.status(500).send(error);
+    })
+})
+
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })

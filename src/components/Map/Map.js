@@ -192,7 +192,7 @@ class MapContainer extends Component {
                             <InfoWindow position={this.state.activeMarker.location} onClose={() => {this.onInfoWindowClose()}} visible={this.state.showingInfoWindow}>
                                 <div>
                                     <div>
-                                        <Col lg={8} md={8} sm={4}>
+                                        <Col lg={12} md={8} sm={4}>
                                         <div style={styleInfoWindowHeader}>
                                             {this.state.activeMarker.name}
                                         </div>  <br/><br/>
@@ -249,9 +249,9 @@ class MapContainer extends Component {
                                             </Table>
                                         </div>
                                         </Col>
-                                        <Col lg={2} md={2} sm={1}>
+                                        {/* <Col lg={2} md={2} sm={1}>
                                             <Image src={this.state.activeMarker.image} fluid rounded thumbnail/>  
-                                        </Col>
+                                        </Col> */}
 
                                         
                                     </div>

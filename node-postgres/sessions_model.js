@@ -216,6 +216,17 @@ const createPost = (body) => {
     })
 }
 
+const getLeaders = () => {
+    return new Promise(function (resolve, reject) {
+        pool.query('SELECT user_name, reputation FROM users ORDER BY reputation DESC', (error, results) => {
+            if (error) {
+                reject(error)
+            }
+            resolve(results)
+        })
+    })
+}
+
 module.exports = {
     getUsers,
     createUser,
@@ -228,5 +239,6 @@ module.exports = {
     createPost,
     getPosts,
     updateLikes,
-    updateDislikes
+    updateDislikes,
+    getLeaders
 }
