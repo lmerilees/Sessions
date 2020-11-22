@@ -204,7 +204,7 @@ const updateRating = (body) => {
 const createPost = (body) => {
     return new Promise(function (resolve, reject) {
         const {post_name, post_body, user_name} = body
-        pool.query('INSERT INTO posts (post_name, post_body, user_name) VALUES ($1, $2, $3) RETURNING *', [
+        pool.query('INSERT INTO posts (post_name, post_body, user_name, likes, dislikes) VALUES ($1, $2, $3, 0, 0) RETURNING *', [
             post_name, post_body, user_name
         ], (error, results) => {
             if (error) {

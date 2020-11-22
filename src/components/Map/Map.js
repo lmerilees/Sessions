@@ -250,7 +250,7 @@ class MapContainer extends Component {
                                         </div>
                                         </Col>
                                         <Col lg={2} md={2} sm={1}>
-                                            <Image src="http://www.cityspaces.ca/wp-content/uploads/2013/09/screen-shot-2013-05-11-at-3-30-31-pm-680x487.png" fluid rounded thumbnail/>  
+                                            <Image src={this.state.activeMarker.image} fluid rounded thumbnail/>  
                                         </Col>
 
                                         

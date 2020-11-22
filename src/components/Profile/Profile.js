@@ -273,7 +273,7 @@ class Profile extends Component {
                                     Stance: {
                                     this.state.createParams.stance
                                 }
-                                    Footed<br/>
+                                    {" "}Footed<br/>
                                     Location: {
                                     this.state.createParams.location
                                 } </Card.Text>

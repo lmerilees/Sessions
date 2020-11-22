@@ -6,12 +6,12 @@ const multer = require('multer')
 
 const bodyParser = require('body-parser')
 
-const upload = multer({ dest: 'public/images'})
 
-app.use(express.json())
+const upload = multer({ dest: 'public/images/'})
+
 app.use(upload.array());
-app.use(express.static('public'));
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: "50MB"}))
+app.use(bodyParser.urlencoded({limit: "50MB", extended: true, parameterLimit: 50000}))
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -63,11 +63,11 @@ app.get('/getPosts', (req, res) => {
     })
 })
 
-app.post('/createSpot', (req, res) => {
-        sessions_model.createSpot(req.body).then(response => {
+app.post('/createSpot', upload.single('file'), (req, res) => {
+    sessions_model.createSpot(req.body).then(response => {
         res.status(200).send(response);
-        }).catch(error => { 
-        console.log(error);
+        console.log('file recieved')
+    }).catch(error => { // console.log(error);
         res.status(500).send(error);
     })
 })

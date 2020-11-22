@@ -165,13 +165,12 @@ class Spots extends Component {
         
         let data = new FormData();
         data.append('file', this.state.imageToUpload);
-
-        data.append("spot_name", this.state.createParams.spot_name);
-        data.append("location", this.state.createParams.location);
-        data.append("details", this.state.createParams.details);
-        data.append("obstacles", this.state.createParams.obstacles);
-        data.append("security", this.state.createParams.security);
-        data.append("challenges", this.state.createParams.challenges);
+        // data.append("spot_name", this.state.createParams.spot_name);
+        // data.append("location", this.state.createParams.location);
+        // data.append("details", this.state.createParams.details);
+        // data.append("obstacles", this.state.createParams.obstacles);
+        // data.append("security", this.state.createParams.security);
+        // data.append("challenges", this.state.createParams.challenges);
 
         let spot_name = this.state.createParams.spot_name;
         let location = this.state.createParams.location;
@@ -180,6 +179,7 @@ class Spots extends Component {
         let obstacles = this.state.createParams.obstacles;
         let security = this.state.createParams.security;
         let challenges = this.state.createParams.challenges;
+        console.log(data.body);
 
         fetch('http://localhost:3001/createSpot', {
             method: 'POST',
@@ -198,8 +198,7 @@ class Spots extends Component {
                 
                 "Content-Type": 'application/json'
             },
-            
-        }).then(async response => {
+                    }).then(async response => {
             const data = await response.json();
             if (!response.ok) { // get error message or default reponse
                 const err = (data && data.message) || response.status;
@@ -471,7 +470,7 @@ class Spots extends Component {
                                         <Col lg={6}
                                             md={2}
                                             sm={1}>
-                                            <Image src={this.state.selectedSpot.image} fluid rounded/>
+                                            <Image src={this.state.selectedSpot.image} fluid rounded/> 
 
                                         </Col>
 
@@ -514,7 +513,7 @@ class Spots extends Component {
                         <div className="styleMain">Add a new spot {/* input form for creating a new spot */}
                             <form id="form-create"
                                 enctype="multipart/form-data"
-                                onSubmit={
+                                action onSubmit={
                                     this.createSpot
                                 }
                                 className="form-create">
@@ -538,18 +537,13 @@ class Spots extends Component {
                                     onChange={
                                         this.handleFormChange
                                     }/>
-                                <input type='file' name='file'  id='file' placeholder="Select Image" onChange={this.handleFile} enctype="multipart/form-data"/>
-                                    {/* <Form.File
+                                <input type='text' name='image' placeholder="Image URL (Optional)"
+                                    onChange={
+                                        this.handleFormChange
+                                    }/>
                                 
-                                        id="fileUpload"
-                                        type="file"
-                                        name="file"
-                                        accept=".png, .jpg"
-                                        label=""
-                                        onChange={this.handleFile}
-                                        enctype="multipart/form-data"
-                                        custom
-                                    /> */}
+                                {/* <input type='file' name='inputfile'  id='inputfile' placeholder="Select Image" onChange={this.handleFile} enctype="multipart/form-data"/> */}
+                                    
                                 
                                 <Button onClick={
                                     this.createSpot
