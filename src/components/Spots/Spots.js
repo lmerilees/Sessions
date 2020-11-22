@@ -8,11 +8,11 @@ import {
     ToggleButtonGroup,
     Modal,
     Image,
-    Table
+    Table,
+    Form,
+    FormLabel
 } from "react-bootstrap";
 import {React, Component} from 'react';
-import {Route, Switch} from 'react-router';
-import * as Dropzone from 'react-dropzone';
 
 import "./Spots.css";
 
@@ -47,6 +47,8 @@ const styleTag = {
     textAlign: 'center'
 }
 
+let file = null;
+
 class Spots extends Component {
     constructor(props) {
         super(props);
@@ -57,6 +59,7 @@ class Spots extends Component {
             userRep: this.props.rep,
             infoModal: false,
             selectedSpot: {},
+            imageToUpload: null,
             buttonDisabled: false,
             createParams: {
                 spot_name: "",
@@ -159,6 +162,17 @@ class Spots extends Component {
     }
 
     createSpot = () => {
+        
+        let data = new FormData();
+        data.append('file', this.state.imageToUpload);
+
+        data.append("spot_name", this.state.createParams.spot_name);
+        data.append("location", this.state.createParams.location);
+        data.append("details", this.state.createParams.details);
+        data.append("obstacles", this.state.createParams.obstacles);
+        data.append("security", this.state.createParams.security);
+        data.append("challenges", this.state.createParams.challenges);
+
         let spot_name = this.state.createParams.spot_name;
         let location = this.state.createParams.location;
         let image = this.state.createParams.image;
@@ -166,11 +180,9 @@ class Spots extends Component {
         let obstacles = this.state.createParams.obstacles;
         let security = this.state.createParams.security;
         let challenges = this.state.createParams.challenges;
+
         fetch('http://localhost:3001/createSpot', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify(
                 {
                     spot_name,
@@ -181,13 +193,20 @@ class Spots extends Component {
                     security,
                     challenges
                 }
-            )
+            ),
+            headers: {
+                
+                "Content-Type": 'application/json'
+            },
+            
         }).then(async response => {
             const data = await response.json();
             if (!response.ok) { // get error message or default reponse
                 const err = (data && data.message) || response.status;
                 return Promise.reject(err);
             }
+
+            console.log(data);
 
             // repopulate the spotlist to reflect addition
             this.getSpots();
@@ -285,9 +304,12 @@ class Spots extends Component {
         });
     }
 
-    handleFileUpload = (file) => {
-        console.log("fileUpload()");
-        // console.log(file);
+
+    handleFile = event => {
+        file = event.target.files[0]
+        this.setState({
+            imageToUpload: file,
+        })
     }
 
     handleFormChange = event => {
@@ -325,7 +347,7 @@ class Spots extends Component {
     }
 
     componentDidUpdate = () => {
-        this.getSpots();
+        
     }
 
     render() {
@@ -449,7 +471,7 @@ class Spots extends Component {
                                         <Col lg={6}
                                             md={2}
                                             sm={1}>
-                                            <Image src="http://www.cityspaces.ca/wp-content/uploads/2013/09/screen-shot-2013-05-11-at-3-30-31-pm-680x487.png" fluid rounded/>
+                                            <Image src={this.state.selectedSpot.image} fluid rounded/>
 
                                         </Col>
 
@@ -491,6 +513,7 @@ class Spots extends Component {
                     <Col style={styleCol}>
                         <div className="styleMain">Add a new spot {/* input form for creating a new spot */}
                             <form id="form-create"
+                                enctype="multipart/form-data"
                                 onSubmit={
                                     this.createSpot
                                 }
@@ -515,6 +538,19 @@ class Spots extends Component {
                                     onChange={
                                         this.handleFormChange
                                     }/>
+                                <input type='file' name='file'  id='file' placeholder="Select Image" onChange={this.handleFile} enctype="multipart/form-data"/>
+                                    {/* <Form.File
+                                
+                                        id="fileUpload"
+                                        type="file"
+                                        name="file"
+                                        accept=".png, .jpg"
+                                        label=""
+                                        onChange={this.handleFile}
+                                        enctype="multipart/form-data"
+                                        custom
+                                    /> */}
+                                
                                 <Button onClick={
                                     this.createSpot
                                 }>Add Spot</Button>

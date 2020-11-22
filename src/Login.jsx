@@ -117,7 +117,7 @@ class Login extends Component {
                                 sm={1}></Col>
                             <Col lg={4}
                                 md={4}
-                                sm={1}>
+                                sm={4}>
                                 <form onSubmit={
                                         this.login
                                     }
@@ -141,7 +141,7 @@ class Login extends Component {
 
                             </Col>
                             <Col lg={4}
-                                md={1}
+                                md={2}
                                 sm={1}></Col>
                         </Row>
 

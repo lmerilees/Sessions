@@ -80,12 +80,11 @@ const createSpot = (body) => {
             location,
             image,
             details,
-            rating,
             security,
             obstacles,
             challenges
         } = body
-        pool.query('INSERT INTO spots (spot_name, location, image, details, security, obstacles, challenges) VALUES ($1, $2, $3, $4, $5, $6, $7)', [
+        pool.query('INSERT INTO spots (spot_name, location, image, details, security, obstacles, challenges) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [
             spot_name,
             location,
             image,

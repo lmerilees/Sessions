@@ -2,15 +2,21 @@ const express = require('express')
 const app = express()
 const port = 3001
 const sessions_model = require('./sessions_model')
-const fileUpload = require('express-fileupload')
-const cors = require('cors')
+const multer = require('multer')
+
+const bodyParser = require('body-parser')
+
+const upload = multer({ dest: 'public/images'})
 
 app.use(express.json())
+app.use(upload.array());
+app.use(express.static('public'));
+app.use(bodyParser.json())
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, type, Access-Control-Allow-Origin');
     next();
 });
 
@@ -32,7 +38,6 @@ app.post('/getProfile', (req, res) => {
 })
 
 app.post('/createUser', (req, res) => {
-    console.log("/createUser")
     sessions_model.createUser(req.body).then(response => {
         res.status(200).send(response);
     }).catch(error => {
@@ -59,9 +64,10 @@ app.get('/getPosts', (req, res) => {
 })
 
 app.post('/createSpot', (req, res) => {
-    sessions_model.createSpot(req.body).then(response => {
+        sessions_model.createSpot(req.body).then(response => {
         res.status(200).send(response);
-    }).catch(error => { // console.log(error);
+        }).catch(error => { 
+        console.log(error);
         res.status(500).send(error);
     })
 })
