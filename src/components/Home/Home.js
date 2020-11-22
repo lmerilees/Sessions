@@ -74,6 +74,7 @@ class Home extends Component {
         this.state = {
             spotList: [],
             postList: [],
+            leaderList: [],
             createParams: {},
             selectedSpot: null
         };
@@ -187,6 +188,51 @@ class Home extends Component {
         });
     }
 
+    getLeaders = () => {
+        fetch('http://localhost:3001/getLeaders', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(async response => {
+            const data = await response.json();
+            if (!response.ok) { // get error message or default reponse
+                const err = (data && data.message) || response.status;
+                return Promise.reject(err);
+            }
+    
+            console.log(data)
+    
+            // add spot names to our array
+            let leaderArray = []
+            let placeArray = []
+            for (let i = 0; i < 3; i++) {
+                leaderArray.push(data.rows[i]);
+                if(i == 0){
+                    placeArray.push("1st")
+                }
+                else if(i == 1){
+                    placeArray.push("2nd")
+                }
+                else if(i == 2){
+                    placeArray.push("3rd")
+                }
+            }
+    
+            console.log(leaderArray)
+            console.log(placeArray)
+    
+            // update our spot state using the array
+            this.setState({
+                leaderList: leaderArray,
+                placeList: placeArray
+            })
+    
+        }).catch(err => {
+            console.error("an error occured", err);
+        });
+    }
+
     handleFormChange = event => {
         let createParamsNew = {
             ...this.state.createParams
@@ -200,6 +246,7 @@ class Home extends Component {
     componentDidMount() {
         this.getSpots();
         this.getPosts();
+        this.getLeaders();
     }
 
 
@@ -307,8 +354,18 @@ class Home extends Component {
 
 
                         <div className="styleMain">
-                            Current Groups
+                            Top Users
                         </div>
+                        <ListGroup style={styleList2}>
+                            {
+                            this.state.leaderList.map((leader, key) => (
+                                <ListGroup.Item eventKey={key} action
+                                >
+                                    {
+                                    this.state.placeList[key] + ": " + leader.user_name
+                                }</ListGroup.Item>
+                            ))
+                        } </ListGroup>
 
                     </Col>
 
