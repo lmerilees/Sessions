@@ -140,9 +140,7 @@ class Login extends Component {
                                 </form>
 
                             </Col>
-                            <Col lg={4}
-                                md={2}
-                                sm={1}></Col>
+                            <Col></Col>
                         </Row>
 
                     </div>

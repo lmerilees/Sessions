@@ -114,6 +114,7 @@ class Profile extends Component {
         }
         if (this.state.setupModal == true) {
             this.toggle2();
+            this.createPost();
         }
 
         let image = this.state.createParams.image;
@@ -157,9 +158,9 @@ class Profile extends Component {
                 const err = (data && data.message) || response.status;
                 return Promise.reject(err);
             }
+
             // repopulate the spotlist to reflect addition
             this.getUserInfo();
-            this.createPost();
 
         }).catch(err => {
             console.error("an error occured", err);

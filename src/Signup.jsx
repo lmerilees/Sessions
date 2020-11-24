@@ -94,43 +94,41 @@ class Signup extends Component {
               </Col>
         </Row>
 
-        <Row>
-          {/* This row is for spacing */}
-        </Row>
+        <Row> {/* This row is for spacing */} </Row>
+                <div className="container">
+                    <div className="styleBody">
+                        <div className="styleMain">Sign up to start your session.</div>
+                        <Row>
+                            <Col lg={4}
+                                md={2}
+                                sm={1}></Col>
+                            <Col lg={4}
+                                md={4}
+                                sm={4}>
+                                <form onSubmit={
+                                        this.Signup
+                                    }
+                                    className="form-signin">
+                                    <div className="row">
+                                        <div className="col">
+                                            <input type="text" name="user_id"
+                                                onChange={
+                                                    this.handleFormChange
+                                                }
+                                                placeholder="Enter Username"/>
+                                            <input type="password" name="user_password"
+                                                onChange={
+                                                    this.handleFormChange
+                                                }
+                                                placeholder="Enter Password"/>
+                                            <input type="submit" value="Sign Up"/>
+                                        </div>
+                                    </div>
+                                </form>
 
-        <div className="container">
-          <div className="styleBody">
-          <div className="styleMain">Sign up to start your session.</div>
-          <Row>
-            <Col>
-            </Col>
-            <Col>
-            <form onSubmit={this.Signup} className="form-signin">
-            <div className="row">
-              <div className="col">
-                <input
-                  type="text"
-                  name="user_id"
-                  onChange={this.handleFormChange}
-                  placeholder="Enter Username"
-                />
-                <input
-                  type="password"
-                  name="user_password"
-                  onChange={this.handleFormChange}
-                  placeholder="Enter Password"
-                />
-                <input type="submit" value="Sign Up" />
-              </div>
-            </div>
-            </form>
-
-
-            </Col>
-            <Col>
-
-           </Col>
-          </Row>
+                            </Col>
+                            <Col></Col>
+                        </Row>
 
         </div>
       </div>

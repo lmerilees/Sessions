@@ -206,7 +206,7 @@ class Home extends Component {
             // add spot names to our array
             let leaderArray = []
             let placeArray = []
-            for (let i = 0; i < 3; i++) {
+            for (let i = 0; i < data.rowCount && i < 3; i++) {
                 leaderArray.push(data.rows[i]);
                 if(i == 0){
                     placeArray.push("1st")

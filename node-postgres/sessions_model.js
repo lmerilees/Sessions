@@ -39,7 +39,7 @@ const getProfile = (body) => {
 const createUser = (body) => {
     return new Promise(function (resolve, reject) {
         const {user_id, user_password} = body
-        pool.query('INSERT INTO users (user_name, password) VALUES ($1, $2)', [
+        pool.query('INSERT INTO users (user_name, password, reputation) VALUES ($1, $2, 0)', [
             user_id, user_password
         ], (error, results) => {
             if (error) {

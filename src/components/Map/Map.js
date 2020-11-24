@@ -1,4 +1,4 @@
-import { Container, Row, Col, Button, Image, Table } from "react-bootstrap";
+import { Container, Row, Col, Button, Image, Table, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import {React, Component } from 'react';
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react'
 
@@ -262,6 +262,13 @@ class MapContainer extends Component {
                     </Col>
                     <Col lg={4} md={4} sm={3}>
                         <div style={styleFilter}>Filters</div>
+                        <ToggleButtonGroup type="checkbox" values="1" aria-label="Spot filters">
+                                <ToggleButton type="checkbox" checked="true" value="1">Ledges</ToggleButton>
+                                <ToggleButton type="checkbox" checked="true" value="1">Rails</ToggleButton>
+                                <ToggleButton type="checkbox" checked="true" value="1">Manual pad</ToggleButton>
+                                <ToggleButton type="checkbox" checked="true" value="1">Stairs</ToggleButton>
+                                <ToggleButton type="checkbox" checked="true" value="1">Banks</ToggleButton>
+                        </ToggleButtonGroup>
                     </Col>
                 </Row>
             </Container>
