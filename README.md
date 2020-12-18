@@ -1,22 +1,43 @@
-# Sessions
-## A web application built with React to help skateboarders find a place to skate.
-## Features:
-### Find and add skate spots around your city
-### Google Maps integration to pin point spot locations
-### Leaderboard to prove you're the best
+* [General info](#general-info)
+* [Technologies](#technologies)
+* [Setup](#setup)
+* [Sample Images](#sample-images)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## General info
+Sessions is web application that helps skateboarders find a place to skate.
+Features: 
+  - Find and add new spots to skate
+  - Google Maps integration to help pin point those hard to find spots
+  - Customize your profile page and show off your style
+  - Earn reputation and climb the leaderboard
+	
+  
+## Technologies
+Project is created with:
+* React
+* React-Bootstrap
+* Google-Maps-React
+* Express.js
+* PostgreSQL
 
-In the project directory, you can run:
 
-### `npm install `
+## Setup
+To run this project, install it from the project folder using npm:
 
-### `npm start`
+```
+$ npm install
+$ npm start
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+then with a new terminal:
 
-then in a 2nd terminal run:
+$ cd node-postgres
+$ nodemon index.js
+```
 
-### `cd node-postgres`
-### `nodemon index.js`
+## Sample Images
+
+![Login](src/Images/Login.png)
+![Home](src/Images/Home.png)
+![Spots](src/Images/Spots.png)
+![Map](src/Images/Map.png)
+![Profile](src/Images/profile.png)
