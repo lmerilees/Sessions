@@ -1,10 +1,12 @@
+# Sessions.
+
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
 * [Sample Images](#sample-images)
 
 ## General info
-Sessions is web application that helps skateboarders find a place to skate.
+Sessions is a web application that helps skateboarders find a place to skate.
 Features: 
   - Find and add new spots to skate
   - Google Maps integration to help pin point those hard to find spots
