@@ -36,8 +36,8 @@ $ nodemon index.js
 
 ## Sample Images
 
-![Login](src/Images/Login.png)
-![Home](src/Images/Home.png)
-![Spots](src/Images/Spots.png)
-![Map](src/Images/Map.png)
-![Profile](src/Images/profile.png)
+![Login](src/images/login.png)
+![Home](src/images/home.png)
+![Spots](src/images/spots.png)
+![Map](src/images/map.png)
+![Profile](src/images/profile.png)
