@@ -33,7 +33,7 @@ $ npm start
 then with a new terminal:
 
 $ cd node-postgres
-$ nodemon index.js
+$ nodemon index.js 
 ```
 
 ## Sample Images
