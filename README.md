@@ -40,6 +40,6 @@ $ nodemon index.js
 
 ![Login](src/images/login.png)
 ![Home](src/images/home.png)
-![Spots](src/images/spots.png)
+![Spots](src/images/spots.png) 
 ![Map](src/images/map.png)
 ![Profile](src/images/profile.png)
