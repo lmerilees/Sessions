@@ -5,9 +5,6 @@ import {
     Button,
     ListGroup,
     Card,
-    Modal,
-    Table,
-    Image
 } from "react-bootstrap";
 import {React, Component} from 'react';
 
@@ -200,9 +197,7 @@ class Home extends Component {
                 const err = (data && data.message) || response.status;
                 return Promise.reject(err);
             }
-    
-            console.log(data)
-    
+
             // add spot names to our array
             let leaderArray = []
             let placeArray = []
@@ -218,9 +213,6 @@ class Home extends Component {
                     placeArray.push("3rd")
                 }
             }
-    
-            console.log(leaderArray)
-            console.log(placeArray)
     
             // update our spot state using the array
             this.setState({

@@ -13,9 +13,35 @@
     font-family: 'consolas';
 }
 
-
-
 .ListGroup{
-    height:70px;
+    height: '70px';
     overflow-y: scroll;
+}
+
+.styleBut{
+    max-width: '200px';
+    text-align: 'center';
+    justify-content: 'center';
+    align-self: 'center';
+    padding-left: '100px';
+}
+
+
+.styleMain{
+    color: 'white';
+    font-size: '30px';
+    text-align: 'center';
+    justify-content: 'center';
+    font-family: 'consolas';
+}
+
+.styleSection{
+    color: 'white';
+    font-size: '30px';
+}
+
+.cardBodyStyle{
+    color: "black";
+    font-size: "20px";
+    text-align: 'left';
 }

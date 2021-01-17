@@ -130,10 +130,9 @@ const modifyProfile = (body) => {
             favourite_clip,
             user_name
         ], (error, results) => {
-            if (error) { // console.log(error);
+            if (error) {
                 reject(error)
             }
-            // console.log(results);
             resolve(results)
         })
     })
@@ -145,10 +144,9 @@ const updateRep = (body) => {
         pool.query('UPDATE users SET reputation = $1 WHERE user_name = $2 RETURNING *', [
             reputation, user_name
         ], (error, results) => {
-            if (error) { // console.log(error);
+            if (error) { 
                 reject(error)
             }
-            // console.log(results);
             resolve(results)
         })
     })
@@ -164,7 +162,6 @@ const updateLikes = (body) => {
                 console.log(error);
                 reject(error)
             }
-            // console.log(results);
             resolve(results)
         })
     })
@@ -180,7 +177,6 @@ const updateDislikes = (body) => {
                 console.log(error);
                 reject(error)
             }
-            // console.log(results);
             resolve(results)
         })
     })
@@ -192,10 +188,9 @@ const updateRating = (body) => {
         pool.query('UPDATE spots SET rating = $1 WHERE spot_name = $2 RETURNING *', [
             rating, spot_name
         ], (error, results) => {
-            if (error) { // console.log(error);
+            if (error) { 
                 reject(error)
             }
-            // console.log(results);
             resolve(results)
         })
     })

@@ -8,38 +8,7 @@ import {
     Card
 } from "react-bootstrap";
 import {React, Component} from 'react';
-import {Route, Switch} from 'react-router'
-
 import "./Profile.css";
-
-const styleBut = {
-    maxWidth: '200px',
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    paddingLeft: '100px'
-}
-
-
-const styleMain = {
-    color: 'white',
-    fontSize: '30px',
-    textAlign: 'center',
-    justifyContent: 'center',
-    fontFamily: 'consolas'
-}
-
-const styleSection = {
-    color: 'white',
-    fontSize: '30px'
-}
-
-const cardBodyStyle = {
-    color: "black",
-    fontSize: "20px",
-    textAlign: 'left'
-}
-
 
 class Profile extends Component {
     constructor(props) {
@@ -101,18 +70,16 @@ class Profile extends Component {
                     board: data.rows[0].board
                 }
             })
-
-            // this.setState.spotList.push(data);
         }).catch(err => {
             console.error("an error occured", err);
         });
     }
 
     modifyDetails = () => {
-        if (this.state.infoModal == true) {
+        if (this.state.infoModal === true) {
             this.toggle();
         }
-        if (this.state.setupModal == true) {
+        if (this.state.setupModal === true) {
             this.toggle2();
             this.createPost();
         }
@@ -128,7 +95,6 @@ class Profile extends Component {
         let bearings = this.state.createParams.bearings;
         let shoes = this.state.createParams.shoes;
         let favourite_clip = this.state.createParams.favourite_clip;
-        let badges = this.state.createParams.badges;
         let user_name = this.state.sessionUser;
 
         fetch('http://localhost:3001/modifyProfile', {
@@ -229,7 +195,6 @@ class Profile extends Component {
     }
 
     render() {
-        const {match} = this.props;
         return (
             <Container fluid>
 
@@ -237,7 +202,7 @@ class Profile extends Component {
                     <Col lg={1}></Col>
 
 
-                    <Col style={styleMain}>
+                    <Col className='styleMain'>
                         {
                         this.state.sessionUser
                     }'s Profile
@@ -253,7 +218,7 @@ class Profile extends Component {
                         md={2}
                         sm={1}></Col>
                     <Col>
-                        <div style={styleSection}>
+                        <div className='styleSection'>
                             Basic Info
                         </div>
                         <Card bg='light'
@@ -262,7 +227,7 @@ class Profile extends Component {
                         }>
                             <Card.Img variant="top" src="holder.png/100px180"/>
                             <Card.Body>
-                                <Card.Text style={cardBodyStyle}>
+                                <Card.Text className='cardBodyStyle'>
                                     Name: {
                                     this.state.sessionUser
                                 }
@@ -353,7 +318,7 @@ class Profile extends Component {
                         sm={1}></Col>
 
                     <Col>
-                        <div style={styleSection}>
+                        <div className='styleSection'>
                             My Favourite Clip
                         </div>
                         <Card bg='light'
@@ -362,7 +327,7 @@ class Profile extends Component {
                         }>
                             <Card.Img variant="top" src="holder.png/100px180"/>
                             <Card.Body>
-                                <Card.Text style={cardBodyStyle}>
+                                <Card.Text className='cardBodyStyle'>
                                     Upload your favourite clip here!
                                 </Card.Text>
                                 <Form>
@@ -379,7 +344,7 @@ class Profile extends Component {
                         md={2}
                         sm={1}></Col>
                     <Col>
-                        <div style={styleSection}>
+                        <div className='styleSection'>
                             Current Setup
                         </div>
 
@@ -389,7 +354,7 @@ class Profile extends Component {
                         }>
                             <Card.Img variant="top" src="holder.png/100px180"/>
                             <Card.Body>
-                                <Card.Text style={cardBodyStyle}>
+                                <Card.Text className='cardBodyStyle'>
                                     Board: {
                                     this.state.createParams.board
                                 }
@@ -505,7 +470,7 @@ class Profile extends Component {
                         md={1}
                         sm={1}></Col>
                     <Col>
-                        <div style={styleSection}>
+                        <div className='styleSection'>
                             Badges
                         </div>
                         <Card bg='light'
@@ -514,7 +479,7 @@ class Profile extends Component {
                         }>
                             <Card.Img variant="top" src="holder.png/100px180"/>
                             <Card.Body>
-                                <Card.Text style={cardBodyStyle}>
+                                <Card.Text className='cardBodyStyle'>
                                     Get skating to earn badges!
                                 </Card.Text>
                             </Card.Body>

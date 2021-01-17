@@ -3,10 +3,7 @@ const app = express()
 const port = 3001
 const sessions_model = require('./sessions_model')
 const multer = require('multer')
-
 const bodyParser = require('body-parser')
-
-
 const upload = multer({ dest: 'public/images/'})
 
 app.use(upload.array());
@@ -29,10 +26,9 @@ app.post('/getUsers', (req, res) => {
 })
 
 app.post('/getProfile', (req, res) => {
-    sessions_model.getProfile(req.body).then(response => { // console.log(response);
+    sessions_model.getProfile(req.body).then(response => {
         res.status(200).send(response);
     }).catch(error => {
-        console.log(error);
         res.status(500).send(error);
     })
 })
@@ -49,7 +45,6 @@ app.get('/getSpots', (req, res) => {
     sessions_model.getSpots().then(response => {
         res.status(200).send(response);
     }).catch(error => {
-        console.log(error);
         res.status(500).send(error);
     })
 })
@@ -58,7 +53,6 @@ app.get('/getPosts', (req, res) => {
     sessions_model.getPosts().then(response => {
         res.status(200).send(response);
     }).catch(error => {
-        console.log(error);
         res.status(500).send(error);
     })
 })
@@ -66,8 +60,7 @@ app.get('/getPosts', (req, res) => {
 app.post('/createSpot', upload.single('file'), (req, res) => {
     sessions_model.createSpot(req.body).then(response => {
         res.status(200).send(response);
-        console.log('file recieved')
-    }).catch(error => { // console.log(error);
+    }).catch(error => {
         res.status(500).send(error);
     })
 })
@@ -76,16 +69,14 @@ app.post('/createPost', (req, res) => {
     sessions_model.createPost(req.body).then(response => {
         res.status(200).send(response);
     }).catch(error => {
-        console.log(error);
         res.status(500).send(error);
     })
 })
 
 app.post('/modifyProfile', (req, res) => {
-    sessions_model.modifyProfile(req.body).then(response => { // console.log(response);
+    sessions_model.modifyProfile(req.body).then(response => {
         res.status(200).send(response);
     }).catch(error => {
-        console.log(error);
         res.status(500).send(error);
     })
 })
@@ -94,7 +85,6 @@ app.post('/updateRep', (req, res) => {
     sessions_model.updateRep(req.body).then(response => {
         res.status(200).send(response);
     }).catch(error => {
-        console.log(error);
         res.status(500).send(error);
     })
 })
@@ -103,7 +93,6 @@ app.post('/updateRating', (req, res) => {
     sessions_model.updateRating(req.body).then(response => {
         res.status(200).send(response);
     }).catch(error => {
-        console.log(error);
         res.status(500).send(error);
     })
 })
@@ -112,7 +101,6 @@ app.post('/updateLikes', (req, res) => {
     sessions_model.updateLikes(req.body).then(response => {
         res.status(200).send(response);
     }).catch(error => {
-        console.log(error);
         res.status(500).send(error);
     })
 })
@@ -121,7 +109,6 @@ app.post('/updateDislikes', (req, res) => {
     sessions_model.updateDislikes(req.body).then(response => {
         res.status(200).send(response);
     }).catch(error => {
-        console.log(error);
         res.status(500).send(error);
     })
 })
@@ -130,7 +117,6 @@ app.get('/getLeaders', (req, res) => {
     sessions_model.getLeaders().then(response => {
         res.status(200).send(response);
     }).catch(error => {
-        console.log(error);
         res.status(500).send(error);
     })
 })

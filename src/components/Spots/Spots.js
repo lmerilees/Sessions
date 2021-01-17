@@ -9,45 +9,10 @@ import {
     Modal,
     Image,
     Table,
-    Form,
-    FormLabel
 } from "react-bootstrap";
 import {React, Component} from 'react';
-
 import "./Spots.css";
 
-const styleCol = {
-    color: 'white',
-    fontSize: '20px',
-    textAlign: 'center',
-    justifyContent: 'center',
-    fontFamily: 'consolas',
-    padding: '0px, 10px, 0px, 10px',
-    minWidth: '200px'
-}
-
-const styleList = {
-    maxHeight: '400px',
-    overflowY: 'scroll'
-}
-
-const styleMain = {
-    fontFamily: 'consolas',
-    fontSize: '15px'
-}
-
-const styleHeader = {
-    fontFamily: 'consolas',
-    fontSize: '40px'
-}
-
-const styleTag = {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    textAlign: 'center'
-}
-
-let file = null;
 
 class Spots extends Component {
     constructor(props) {
@@ -96,7 +61,6 @@ class Spots extends Component {
 
             this.props.handler();
 
-            // this.setState.spotList.push(data);
         }).catch(err => {
             console.error("an error occured", err);
         });
@@ -122,7 +86,6 @@ class Spots extends Component {
                 return Promise.reject(err);
             }
 
-            console.log(data)
             // update our states
             this.setState({userRep: data.rows[0].reputation})
 
@@ -162,16 +125,8 @@ class Spots extends Component {
     }
 
     createSpot = () => {
-        
         let data = new FormData();
         data.append('file', this.state.imageToUpload);
-        // data.append("spot_name", this.state.createParams.spot_name);
-        // data.append("location", this.state.createParams.location);
-        // data.append("details", this.state.createParams.details);
-        // data.append("obstacles", this.state.createParams.obstacles);
-        // data.append("security", this.state.createParams.security);
-        // data.append("challenges", this.state.createParams.challenges);
-
         let spot_name = this.state.createParams.spot_name;
         let location = this.state.createParams.location;
         let image = this.state.createParams.image;
@@ -179,7 +134,6 @@ class Spots extends Component {
         let obstacles = this.state.createParams.obstacles;
         let security = this.state.createParams.security;
         let challenges = this.state.createParams.challenges;
-        console.log(data.body);
 
         fetch('http://localhost:3001/createSpot', {
             method: 'POST',
@@ -204,8 +158,6 @@ class Spots extends Component {
                 const err = (data && data.message) || response.status;
                 return Promise.reject(err);
             }
-
-            console.log(data);
 
             // repopulate the spotlist to reflect addition
             this.getSpots();
@@ -259,25 +211,16 @@ class Spots extends Component {
                     challenges: this.state.selectedSpot.challenges
                 }
             })
-
             this.getSpots();
-
-
-            // let user know they added a new spot successfully <Alert>Thanks for letting us know!</Alert>
-
         }).catch(err => {
             console.error("an error occured", err);
         });
     }
 
     createPost = () => {
-        console.log("createPost()");
-
         let spot_name = this.state.createParams.spot_name;
         let location = this.state.createParams.location;
-        let image = this.state.createParams.image;
         let details = this.state.createParams.details;
-        let security = this.state.createParams.security;
         let obstacles = this.state.createParams.obstacles;
         let user_name = this.state.sessionUser;
         let post_name = user_name + " added a new spot called " + spot_name;
@@ -296,8 +239,6 @@ class Spots extends Component {
                 const err = (data && data.message) || response.status;
                 return Promise.reject(err);
             }
-            console.log(data);
-
         }).catch(err => {
             console.error("an error occured", err);
         });
@@ -305,7 +246,7 @@ class Spots extends Component {
 
 
     handleFile = event => {
-        file = event.target.files[0]
+        let file = event.target.files[0]
         this.setState({
             imageToUpload: file,
         })
@@ -339,7 +280,7 @@ class Spots extends Component {
         this.updateRating(-1)
     }
 
-    // load spots when component is rendered for the first time
+    // load spots and rep when component is rendered for the first time
     componentDidMount = () => {
         this.getSpots();
         this.getUserRep();
@@ -356,11 +297,11 @@ class Spots extends Component {
                     <Col lg={1}
                         md={1}
                         sm={1}></Col>
-                    <Col style={styleCol}>
+                    <Col className="styleCol">
 
                         {/* Spot list */}
                         <div className="styleMain">Spot List</div>
-                        <ListGroup style={styleList}>
+                        <ListGroup className='styleList'>
                             {
                             this.state.spotList.map((spot, key) => (
                                 <ListGroup.Item eventKey={key}
@@ -383,14 +324,14 @@ class Spots extends Component {
                                     this.state.infoModal
                             }>
                                 <Modal.Header>
-                                    <Modal.Title style={styleHeader}>
+                                    <Modal.Title dialogClassName='styleHeader'>
                                         {
                                         this.state.selectedSpot.spot_name
                                     }</Modal.Title>
                                 </Modal.Header>
-                                <Modal.Body>
+                                <Modal.Body dialogClassName='styleMain'>
 
-                                    <Row style={styleMain}>
+                                    <Row>
 
                                         <Col lg={6}
                                             md={4}
@@ -443,7 +384,7 @@ class Spots extends Component {
                                             </Table>
 
                                             <br/>
-                                            <div style={styleTag}>Had a session here? Rate it!</div>
+                                            <div className='styleTag'>Had a session here? Rate it!</div>
                                             <Row lg={4}>
                                                 <Col>
                                                     <Button variant="outline-success"
@@ -509,8 +450,9 @@ class Spots extends Component {
                         sm={1}></Col>
 
 
-                    <Col style={styleCol}>
-                        <div className="styleMain">Add a new spot {/* input form for creating a new spot */}
+                    <Col className='styleCol'>
+                        <div className="styleMain">Add a new spot 
+                            {/* input form for creating a new spot */}
                             <form id="form-create"
                                 enctype="multipart/form-data"
                                 action onSubmit={
@@ -540,10 +482,7 @@ class Spots extends Component {
                                 <input type='text' name='image' placeholder="Image URL (Optional)"
                                     onChange={
                                         this.handleFormChange
-                                    }/>
-                                
-                                {/* <input type='file' name='inputfile'  id='inputfile' placeholder="Select Image" onChange={this.handleFile} enctype="multipart/form-data"/> */}
-                                    
+                                    }/>                                    
                                 
                                 <Button onClick={
                                     this.createSpot

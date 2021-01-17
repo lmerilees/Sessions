@@ -18,7 +18,7 @@
 }
 
 .ListGroup{
-    max-height: 10px;
+    max-height: '10px';
     overflow-y: scroll;
 }
 
@@ -27,4 +27,35 @@
     max-width: 75vw;
     height: 90vh;
     max-height: 90vh;
+}
+
+.styleCol  {
+    color: 'white';
+    font-size: '20px';
+    text-align: 'center';
+    justify-content: 'center';
+    font-family: 'consolas';
+    padding: '0px, 10px, 0px, 10px';
+    min-width: '200px';
+}
+
+.styleList {
+    max-height: '400px';
+    overflow-y: 'scroll';
+}
+
+.styleMain {
+    font-family: 'consolas';
+    font-size: '15px';
+}
+
+.styleHeader {
+    font-family: 'consolas';
+    font-size: '40px';
+}
+
+.styleTag {
+    font-size: '20px';
+    font-weight: 'bold';
+    text-align: 'center';
 }

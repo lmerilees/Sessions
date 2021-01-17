@@ -1,43 +1,15 @@
-import { Container, Row, Col, Button, Image, Table, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
+import { Container, Row, Col, Table, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import {React, Component } from 'react';
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react'
+import "./Map.css";
+
+const markerArray = [];
 
 const mapStyles = {
     width: '800px',
     height: '550px',
     position: "fixed"
 };
-
-const styleFilter = {
-    color: 'white',
-    fontSize: '30px',
-    padding: '10px',
-    fontFamily: 'consolas',
-}
-
-const styleMain = {
-    color: 'white',
-    fontSize: '50px',
-    textAlign: 'center',
-    justifyContent: 'center',
-    fontFamily: 'consolas',
-}
-
-const styleInfoWindowHeader = {
-    fontSize: '20px',
-    fontFamily: 'consolas',
-    fontWeight: 'bold'
-}
-
-const styleInfoWindowbody = {
-    fontSize: '15px',
-    fontFamily: 'consolas',
-    justifyContent: 'left',
-    textAlign: 'left',
-    float: 'left'
-}
-
-const markerArray = [];
 
 class MapContainer extends Component {
     constructor(props){
@@ -51,7 +23,7 @@ class MapContainer extends Component {
             mapList: [],
             showingInfoWindow: false,
             activeMarker: ""
-        }        
+        }
     }
 
     /**
@@ -65,13 +37,12 @@ class MapContainer extends Component {
 
     // convert address to coordinates so that can be marked on the map
     getCoordinates = (spot) => {
-
         // access words of address string 
         let str = spot.location.split(' ');
         let streetNum = str[0];
         let streetName = str[1]
         let streetType = str[2];
-        let sql = "https://maps.googleapis.com/maps/api/geocode/json?address=" + streetNum + "+"+ streetName + "+" + streetType + ",+" + "Saskatoon,+SK&key=AIzaSyDRkknHDMFkSTIXzpRnySLykWf659-wzio"
+        let sql = "https://maps.googleapis.com/maps/api/geocode/json?address=" + streetNum + "+"+ streetName + "+" + streetType + ",+Saskatoon,+SK&key=AIzaSyDRkknHDMFkSTIXzpRnySLykWf659-wzio"
         fetch(sql)
         .then(async response => {
             const data = await response.json();
@@ -80,7 +51,8 @@ class MapContainer extends Component {
                 const err = (data && data.message) || response.status;
                 return Promise.reject(err);
             }
-        
+            
+            // get location from response
             let loc = data.results[0].geometry.location
             
             // add name and location to our marker array
@@ -105,7 +77,7 @@ class MapContainer extends Component {
         });
     }
 
-    // get spots from the 
+    // get spots from the database
     getSpots = () =>{
         fetch('http://localhost:3001/getSpots', {
             method: 'GET',
@@ -134,8 +106,8 @@ class MapContainer extends Component {
         });
       }
 
+    // when a marker gets clicked, show the InfoWindow
     handleClick = (spot) => {
-        console.log(spot)
         this.setState({
             activeMarker: spot,
             showingInfoWindow: true
@@ -143,12 +115,14 @@ class MapContainer extends Component {
         
     }
 
+    // when the x is clicked, hide the InfoWindow
     onInfoWindowClose = () =>{
         this.setState({
         showingInfoWindow: false
         });
     }
 
+    // when the component is rendered for the first time, get user location and spots
     componentDidMount() {
         this.getLocation();
         this.getSpots();
@@ -157,7 +131,7 @@ class MapContainer extends Component {
     render() {
         return (
             <Container fluid>
-                <div style={styleMain}>Map</div>
+                <div className='styleMain'>Map</div>
                 <Row>
                     <Col lg={1} md={1} sm={1}></Col>
                     <Col lg={7} md={5} sm={4}>
@@ -193,10 +167,10 @@ class MapContainer extends Component {
                                 <div>
                                     <div>
                                         <Col lg={12} md={8} sm={4}>
-                                        <div style={styleInfoWindowHeader}>
+                                        <div className='styleInfoWindowHeader'>
                                             {this.state.activeMarker.name}
                                         </div>  <br/><br/>
-                                        <div style={styleInfoWindowbody}>
+                                        <div className='styleInfoWindowbody'>
                                             <Table size="lg" striped={false} bordered={true}>
                                                 <tr>
                                                     <td>
@@ -249,11 +223,6 @@ class MapContainer extends Component {
                                             </Table>
                                         </div>
                                         </Col>
-                                        {/* <Col lg={2} md={2} sm={1}>
-                                            <Image src={this.state.activeMarker.image} fluid rounded thumbnail/>  
-                                        </Col> */}
-
-                                        
                                     </div>
                                  </div>
                             </InfoWindow>
@@ -261,7 +230,7 @@ class MapContainer extends Component {
                         </Map>
                     </Col>
                     <Col lg={4} md={4} sm={3}>
-                        <div style={styleFilter}>Filters</div>
+                        <div className='styleFilter'>Filters</div>
                         <ToggleButtonGroup type="checkbox" values="1" aria-label="Spot filters">
                                 <ToggleButton type="checkbox" checked="true" value="1">Ledges</ToggleButton>
                                 <ToggleButton type="checkbox" checked="true" value="1">Rails</ToggleButton>
